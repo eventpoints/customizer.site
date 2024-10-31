@@ -8,13 +8,13 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: postgresql://customizer:customizer@127.0.0.1:5432/customizer?serverVersion=13&charset=utf8
+      DATABASE_URL: postgresql://root:customizer@127.0.0.1:5432/customizer?serverVersion=13&charset=utf8
 
     services:
       db:
-        image: postgres
+        image: postgres:13
         env:
-          POSTGRES_USER: customizer
+          POSTGRES_USER: root
           POSTGRES_PASSWORD: customizer
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
         ports:
