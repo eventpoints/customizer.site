@@ -1,0 +1,27 @@
+// assets/scss/custom-bootstrap.scss
+
+@import 'custom.variables.scss';
+
+// Scope the styles within the custom section
+#custom-bootstrap-section {
+  --primary: #{$primary};
+  --secondary: #{$secondary};
+  --success: #{$success};
+  --info: #{$info};
+  --warning: #{$warning};
+  --danger: #{$danger};
+  --light: #{$light};
+  --dark: #{$dark};
+
+  // Apply scoped styles to Bootstrap components within this section
+  .text-primary {
+    color: var(--primary) !important;
+  }
+  .btn-primary {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+  }
+
+  // Include other Bootstrap components as needed
+  @import '~bootstrap/scss/bootstrap';
+}

@@ -1,5 +1,10 @@
-import { startStimulusApp } from '@symfony/stimulus-bundle';
+import {startStimulusApp} from '@symfony/stimulus-bridge';
+import ColorPicker from '@stimulus-components/color-picker'
 
-const app = startStimulusApp();
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+export const app = startStimulusApp(require.context(
+    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    true,
+    /\.(j|t)sx?$/
+));
+
+app.register('color-picker', ColorPicker)
