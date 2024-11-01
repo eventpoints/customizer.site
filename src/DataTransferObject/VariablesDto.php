@@ -2,9 +2,23 @@
 
 namespace App\DataTransferObject;
 
+use OpenApi\Attributes as OA;
+
+#[OA\Schema(
+    title: "Variables Data Transfer Object",
+    description: "Schema for VariablesDto with properties required for the API."
+)]
 class VariablesDto
 {
+    #[OA\Property(
+        description: 'Primary color value',
+        type: 'string'
+    )]
     private null|string $primary;
+    #[OA\Property(
+        description: 'Secondary color value',
+        type: 'string'
+    )]
     private null|string $secondary;
 
     /**
