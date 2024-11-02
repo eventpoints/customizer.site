@@ -3,12 +3,13 @@
 namespace App\Controller\Api;
 
 use App\Service\BootstrapCompilerService;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route(path: '/api')]
+#[OA\Tag(name: 'Compile')]
 class CompileController extends AbstractController
 {
     public function __construct(
@@ -17,7 +18,20 @@ class CompileController extends AbstractController
     {
     }
 
-    #[Route(path: '/compile', name: 'compile_css')]
+    #[OA\RequestBody(
+        description: 'JSON body containing variables required for the operation.',
+        required: true,
+        content: new OA\MediaType(
+            mediaType: 'application/json',
+            schema: new OA\Schema(ref: '#/components/schemas/VariablesDto')
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the json object with css',
+        content: new OA\MediaType(mediaType: 'application/json')
+    )]
+    #[Route(path: '/compile', name: 'compile_css', methods: ['POST'])]
     public function compileCss(Request $request): JsonResponse
     {
         $variables = json_decode($request->getContent(), true)['variables'];

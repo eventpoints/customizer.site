@@ -33,4 +33,11 @@ phpstan.neon
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
+###> docker/docker ###
+/*.override.yml
 /docker
+###< docker/docker ###
+
+###> Intellij/PhpStorm ###
+/.idea
+###< Intellij/PhpStorm ###
