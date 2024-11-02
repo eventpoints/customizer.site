@@ -12,7 +12,7 @@ final readonly class ScssService
     {
         $scssContent = "";
         foreach ($variables as $key => $variable) {
-            $name = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
+            $name = strtolower((string) preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
             $scssContent .= "$$name: $variable; \n";
         }
         return $scssContent;

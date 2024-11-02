@@ -21,7 +21,7 @@ class DownloadController extends AbstractController
      */
     public function __construct(
         #[AutowireIterator('app.service.fileBuilderService')]
-        private iterable $fileBuilders
+        private readonly iterable $fileBuilders
     )
     {
     }

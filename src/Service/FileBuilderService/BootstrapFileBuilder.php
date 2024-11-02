@@ -8,7 +8,7 @@ use App\Service\BootstrapCompilerService;
 class BootstrapFileBuilder implements FileBuilderInterface
 {
     public function __construct(
-        private BootstrapCompilerService $bootstrapCompilerService,
+        private readonly BootstrapCompilerService $bootstrapCompilerService,
     )
     {
     }
