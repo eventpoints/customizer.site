@@ -56,7 +56,7 @@ services:
       - ./docker/db/data:/var/lib/postgresql/data:rw
 
   js-watch:
-      image: node:21
+      image: node:22
       volumes:
         - .:/app:cached
       working_dir: /app
