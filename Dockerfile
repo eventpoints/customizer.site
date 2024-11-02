@@ -14,7 +14,7 @@ COPY composer.json composer.lock symfony.lock ./
 
 RUN composer install --no-dev --prefer-dist --no-interaction --no-scripts
 
-FROM node:21 as js-builder
+FROM node:22 as js-builder
 
 WORKDIR /build
 
