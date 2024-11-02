@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\ApiController;
+namespace App\Controller\Api;
 
 use App\DataTransferObject\VariablesDto;
 use App\Enumerators\DownloadTypeEnum;

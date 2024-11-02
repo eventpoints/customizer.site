@@ -5,7 +5,7 @@ namespace App\Service\FileBuilderService;
 use App\DataTransferObject\VariablesDto;
 use App\Service\BootstrapCompilerService;
 
-class BootstrapFileBuilder implements FileBuilderInterface
+class BootstrapVariablesFileBuilder implements FileBuilderInterface
 {
     public function __construct(
         private BootstrapCompilerService $bootstrapCompilerService,

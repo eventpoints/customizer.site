@@ -81,7 +81,7 @@ export default {
     async compile() {
       this.isLoading = true;
       axios.defaults.baseURL = 'https://localhost/';
-      await axios.post('api/compile', {
+      await axios.post('api/v1/compile', {
         variables: this.variables
       }).then((response) => {
         this.css = response.data.css;

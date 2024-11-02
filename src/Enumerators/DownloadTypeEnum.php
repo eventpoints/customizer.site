@@ -3,6 +3,8 @@
 namespace App\Enumerators;
 
 use App\Service\FileBuilderService\BootstrapFileBuilder;
+use App\Service\FileBuilderService\BootstrapMinFileBuilder;
+use App\Service\FileBuilderService\BootstrapVariablesFileBuilder;
 use App\Service\FileBuilderService\FileBuilderInterface;
 
 enum DownloadTypeEnum: string
@@ -18,8 +20,8 @@ enum DownloadTypeEnum: string
     {
         return match($this) {
             DownloadTypeEnum::BOOTSTRAP => BootstrapFileBuilder::class,
-            DownloadTypeEnum::BOOTSTRAP_MIN => throw new \Exception('bootstrap min not Implemented'),
-            DownloadTypeEnum::VARIABLES => throw new \Exception('variables not Implemented'),
+            DownloadTypeEnum::BOOTSTRAP_MIN => BootstrapMinFileBuilder::class,
+            DownloadTypeEnum::VARIABLES => BootstrapVariablesFileBuilder::class,
         };
     }
 
