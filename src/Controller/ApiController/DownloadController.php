@@ -4,14 +4,27 @@ namespace App\Controller\ApiController;
 
 use App\DataTransferObject\VariablesDto;
 use App\Enumerators\DownloadTypeEnum;
+use App\Service\FileBuilderService\FileBuilderInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[OA\Tag(name: 'Download')]
 class DownloadController extends AbstractController
 {
+    /**
+     * @param iterable<int, FileBuilderInterface> $fileBuilders
+     */
+    public function __construct(
+        #[AutowireIterator('app.service.fileBuilderService')]
+        private iterable $fileBuilders
+    )
+    {
+    }
 
     #[OA\Parameter(
         parameter: 'identifier',
@@ -36,6 +49,19 @@ class DownloadController extends AbstractController
     #[Route("/download/{identifier}", name: "download", methods: ["POST"])]
     public function download(DownloadTypeEnum $identifier, #[MapRequestPayload] VariablesDto $variablesDto): Response
     {
-        dd($identifier, $variablesDto);
+        return new Response(
+            content: $this->findBuilder($identifier)->build($variablesDto),
+            headers: [
+                'Content-Type' => 'text/css',
+                'Content-Disposition' => 'attachment; filename="' . $identifier->getFileName() . '"'
+            ]
+        );
+    }
+
+    private function findBuilder(DownloadTypeEnum $identifier): ?FileBuilderInterface
+    {
+        return (new ArrayCollection(iterator_to_array($this->fileBuilders)))->findFirst(
+            fn(int $key, FileBuilderInterface $fileBuilder):bool => $fileBuilder instanceof ($identifier->getBuilder())
+        );
     }
 }
