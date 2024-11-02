@@ -55,7 +55,6 @@
 import ColorPickerInput from './ColorPickerInput.vue'
 import AppLayout from './AppLayout.vue'
 import axios from "axios";
-import debounce from 'lodash.debounce'
 
 export default {
   components: {
@@ -66,24 +65,14 @@ export default {
     return {
       css: '',
       isLoading: true,
-      variables: {
-        bodyBg: '#ffffff',
-        primary: '#007bff',
-        secondary: '#6c757d',
-        success: '#198754',
-        info: '#0dcaf0',
-        warning: '#ffc107',
-        danger: '#dc3545',
-      },
+      variables: {}
     };
   },
   methods: {
     async compile() {
       this.isLoading = true;
       axios.defaults.baseURL = 'https://localhost/';
-      await axios.post('api/v1/compile', {
-        variables: this.variables
-      }).then((response) => {
+      await axios.post('api/v1/compile', this.variables).then((response) => {
         this.css = response.data.css;
         this.applyCss(this.css);
       }).finally(() => {

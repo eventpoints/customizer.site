@@ -2,11 +2,15 @@
 
 namespace App\Controller\Api;
 
+use App\DataTransferObject\VariablesDto;
 use App\Service\BootstrapCompilerService;
+use App\Service\ClassPropertyService;
 use OpenApi\Attributes as OA;
+use ReflectionClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Compile')]
@@ -18,6 +22,9 @@ class CompileController extends AbstractController
     {
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     #[OA\RequestBody(
         description: 'JSON body containing variables required for the operation.',
         required: true,
@@ -32,9 +39,9 @@ class CompileController extends AbstractController
         content: new OA\MediaType(mediaType: 'application/json')
     )]
     #[Route(path: '/compile', name: 'compile_css', methods: ['POST'])]
-    public function compileCss(Request $request): JsonResponse
+    public function compileCss(#[MapRequestPayload] VariablesDto $variablesDto): JsonResponse
     {
-        $variables = json_decode($request->getContent(), true)['variables'];
+        $variables = ClassPropertyService::getClassProperties(variablesDto: $variablesDto);
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
         return new JsonResponse(['css' => $css]);
     }
