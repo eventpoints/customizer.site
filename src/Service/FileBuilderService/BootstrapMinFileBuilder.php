@@ -4,6 +4,7 @@ namespace App\Service\FileBuilderService;
 
 use App\DataTransferObject\VariablesDto;
 use App\Service\BootstrapCompilerService;
+use App\Service\ClassPropertyService;
 
 class BootstrapMinFileBuilder implements FileBuilderInterface
 {
@@ -15,6 +16,7 @@ class BootstrapMinFileBuilder implements FileBuilderInterface
 
     public function build(VariablesDto $variablesDto): string
     {
-        return $this->bootstrapCompilerService->compileCustomBootstrap($variablesDto);
+        $variables = ClassPropertyService::getClassProperties(variablesDto: $variablesDto);
+        return $this->bootstrapCompilerService->compileCustomBootstrap($variables, true);
     }
 }

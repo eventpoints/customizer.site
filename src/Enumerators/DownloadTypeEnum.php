@@ -2,10 +2,10 @@
 
 namespace App\Enumerators;
 
+use App\DataTransferObject\DownloadTypeDto;
 use App\Service\FileBuilderService\BootstrapFileBuilder;
 use App\Service\FileBuilderService\BootstrapMinFileBuilder;
 use App\Service\FileBuilderService\BootstrapVariablesFileBuilder;
-use App\Service\FileBuilderService\FileBuilderInterface;
 
 enum DownloadTypeEnum: string
 {
@@ -13,24 +13,12 @@ enum DownloadTypeEnum: string
     case BOOTSTRAP_MIN = 'bootstrapMin';
     case VARIABLES = 'variables';
 
-    /**
-     * @return class-string<FileBuilderInterface>
-     */
-    public function getBuilder(): string
+    public function getType(): DownloadTypeDto
     {
         return match($this) {
-            DownloadTypeEnum::BOOTSTRAP => BootstrapFileBuilder::class,
-            DownloadTypeEnum::BOOTSTRAP_MIN => BootstrapMinFileBuilder::class,
-            DownloadTypeEnum::VARIABLES => BootstrapVariablesFileBuilder::class,
-        };
-    }
-
-    public function getFileName(): string
-    {
-        return match($this) {
-            DownloadTypeEnum::BOOTSTRAP => 'bootstrap.css',
-            DownloadTypeEnum::BOOTSTRAP_MIN => 'bootstrap.min.css',
-            DownloadTypeEnum::VARIABLES => '_variables.scss',
+            DownloadTypeEnum::BOOTSTRAP => new DownloadTypeDto(builderFqn: BootstrapFileBuilder::class,fileName:  'bootstrap.css', mimeType: 'text/css'),
+            DownloadTypeEnum::BOOTSTRAP_MIN => new DownloadTypeDto(builderFqn: BootstrapMinFileBuilder::class,fileName:  'bootstrap.min.css', mimeType: 'text/css'),
+            DownloadTypeEnum::VARIABLES => new DownloadTypeDto(builderFqn: BootstrapVariablesFileBuilder::class,fileName:  '_variables.scss', mimeType: 'text/css'),
         };
     }
 }
