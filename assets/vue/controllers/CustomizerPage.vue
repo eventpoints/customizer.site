@@ -113,15 +113,17 @@ export default {
   },
   watch: {
     variables: {
-      handler(newVal) {
-        this.debouncedCompile();
-      },
+      handler: 'compile',
       deep: true,
     },
   },
-  mounted() {
-    this.debouncedCompile = debounce(this.compile, 800);
-    this.compile();
+  async mounted() {
+    await axios.get('api/v1/variables').then((response) => {
+      console.log(this.variables)
+      this.variables = response.data;
+    }).finally(() => {
+      this.compile();
+    })
   }
 };
 </script>
