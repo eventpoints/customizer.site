@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PhpCsFixer\Fixer\Import\NoUnusedImportsFixer;
+use PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 
 return ECSConfig::configure()
@@ -17,6 +18,7 @@ return ECSConfig::configure()
     // add a single rule
     ->withRules([
         NoUnusedImportsFixer::class,
+        DeclareStrictTypesFixer::class,
     ])
 
     // add sets - group of rules
