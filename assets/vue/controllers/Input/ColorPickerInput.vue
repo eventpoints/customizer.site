@@ -7,9 +7,7 @@
           :id="this.id"
           :placeholder="this.label"
           v-model="color"
-          @input="validateHex"
           class="form-control-plaintext w-75"
-          maxlength="7"
       />
       <input
           type="color"
@@ -45,11 +43,6 @@ export default {
   methods: {
     updateColor() {
       this.$emit('update:modelValue', this.color);
-    },
-    validateHex() {
-      if (/^#[0-9A-Fa-f]{6}$/.test(this.color)) {
-        this.updateColor();
-      }
     },
   },
 };

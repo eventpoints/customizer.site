@@ -12,8 +12,17 @@ final readonly class VariablesDto
 {
 
     /**
+     * @param string|null $bodyBg
      * @param string|null $primary
      * @param string|null $secondary
+     * @param string|null $success
+     * @param string|null $info
+     * @param string|null $warning
+     * @param string|null $danger
+     * @param string|null $light
+     * @param string|null $dark
+     * @param string|null $light
+     * @param string|null $listGroupBg
      */
     public function __construct(
         #[OA\Property(
@@ -62,9 +71,18 @@ final readonly class VariablesDto
             type: 'string'
         )]
         private null|string $dark = '#212529',
+        #[OA\Property(
+            description: 'List Group Background Color',
+            type: 'string'
+        )]
+        private null|string $listGroupBg = '#333333',
+        #[OA\Property(
+            description: 'Border Radius',
+            type: 'string'
+        )]
+        private null|string $borderRadius = "0.375rem",
     )
-    {
-    }
+    {}
 
     public function getBodyBg(): ?string
     {
@@ -109,6 +127,16 @@ final readonly class VariablesDto
     public function getDark(): ?string
     {
         return $this->dark;
+    }
+
+    public function getListGroupBg(): ?string
+    {
+        return $this->listGroupBg;
+    }
+
+    public function getBorderRadius(): ?string
+    {
+        return $this->borderRadius;
     }
 
 }
