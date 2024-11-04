@@ -1,14 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace App\DataTransferObject;
+namespace App\DataTransferObject\Bootstrap53;
 
+use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    title: "Variables Data Transfer Object",
-    description: "Schema for VariablesDto with properties required for the API."
+    title: "Bootstrap 5.3 - Colors",
+    type: "object",
 )]
-final readonly class VariablesDto
+final readonly class ColorsDto
 {
 
     /**
@@ -27,60 +28,55 @@ final readonly class VariablesDto
     public function __construct(
         #[OA\Property(
             description: 'Body Background color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $bodyBg = '#FFFFFF',
         #[OA\Property(
             description: 'Primary color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $primary = '#0d6efd',
 
         #[OA\Property(
             description: 'Secondary color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $secondary = '#6c757d',
         #[OA\Property(
             description: 'Success color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $success = '#198754',
         #[OA\Property(
             description: 'Info color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $info = '#0dcaf0',
         #[OA\Property(
             description: 'Warning color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $warning = '#ffc107',
         #[OA\Property(
             description: 'Danger color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $danger = '#dc3545',
         #[OA\Property(
             description: 'Light color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $light = '#f8f9fa',
         #[OA\Property(
             description: 'Dark color value',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $dark = '#212529',
         #[OA\Property(
             description: 'List Group Background Color',
-            type: 'string'
+            type: InputTypeEnum::COLOR->value
         )]
         private null|string $listGroupBg = '#333333',
-        #[OA\Property(
-            description: 'Border Radius',
-            type: 'string'
-        )]
-        private null|string $borderRadius = "0.375rem",
     )
     {}
 
@@ -132,11 +128,6 @@ final readonly class VariablesDto
     public function getListGroupBg(): ?string
     {
         return $this->listGroupBg;
-    }
-
-    public function getBorderRadius(): ?string
-    {
-        return $this->borderRadius;
     }
 
 }

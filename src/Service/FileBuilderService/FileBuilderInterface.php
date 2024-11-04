@@ -2,11 +2,11 @@
 
 namespace App\Service\FileBuilderService;
 
-use App\DataTransferObject\VariablesDto;
+use App\DataTransferObject\RootDtoInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('app.service.fileBuilderService')]
 interface FileBuilderInterface
 {
-    public function build(VariablesDto $variablesDto):string;
+    public function build(RootDtoInterface $dto):string;
 }

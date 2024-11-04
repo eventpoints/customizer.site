@@ -70,7 +70,7 @@ export default {
     const compile = async () => {
       store.isLoading = true;
       axios.defaults.baseURL = 'https://localhost/';
-      await axios.post('api/v1/compile', store.variables).then((response) => {
+      await axios.post('api/v1/compile/bootstrap53', store.variables).then((response) => {
         store.css = response.data.css;
         applyCss(store.css);
       }).finally(() => {
@@ -121,7 +121,7 @@ export default {
     });
 
     onMounted(async () => {
-      await axios.get('api/v1/variables').then((response) => {
+      await axios.get('/api/v1/variables/bootstrap53/colors').then((response) => {
         store.variables = response.data;
       }).finally(() => {
         compile();
