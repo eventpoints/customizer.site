@@ -13,6 +13,7 @@
     "doctrine/orm": "^3.3",
     "natxet/cssmin": "^3.0",
     "nelmio/api-doc-bundle": "^4.33",
+    "nelmio/cors-bundle": "^2.5",
     "nesbot/carbon": "^3.8",
     "nette/utils": "*",
     "phpdocumentor/reflection-docblock": "^5.4",
