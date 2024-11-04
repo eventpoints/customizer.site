@@ -12,6 +12,7 @@ final readonly class Bootstrap53Dto implements RootDtoInterface
 {
     public function __construct(
         private ColorsDto $colors = new ColorsDto(),
+        private GeneralDto $buttons = new GeneralDto(),
     )
     {
     }
@@ -19,5 +20,10 @@ final readonly class Bootstrap53Dto implements RootDtoInterface
     public function getColors(): ColorsDto
     {
         return $this->colors;
+    }
+
+    public function getButtons(): GeneralDto
+    {
+        return $this->buttons;
     }
 }
