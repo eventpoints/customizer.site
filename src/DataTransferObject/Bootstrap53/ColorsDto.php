@@ -1,14 +1,14 @@
 <?php declare(strict_types=1);
 
-namespace App\DataTransferObject;
+namespace App\DataTransferObject\Bootstrap53;
 
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    title: "Variables Data Transfer Object",
-    description: "Schema for VariablesDto with properties required for the API."
+    title: "Bootstrap 5.3 - Colors",
+    type: "object",
 )]
-final readonly class VariablesDto
+final readonly class ColorsDto
 {
 
     /**

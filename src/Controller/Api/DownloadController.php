@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\VariablesDto;
+use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
 use App\Enumerators\DownloadTypeEnum;
 use App\Service\FileBuilderService\FileBuilderInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +14,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Download')]
+#[Route("/download", methods: ["POST"])]
 class DownloadController extends AbstractController
 {
     /**
@@ -36,21 +37,18 @@ class DownloadController extends AbstractController
     #[OA\RequestBody(
         description: 'JSON body containing variables required for the operation.',
         required: true,
-        content: new OA\MediaType(
-            mediaType: 'application/json',
-            schema: new OA\Schema(ref: '#/components/schemas/VariablesDto')
-        )
+        content: new OA\JsonContent(ref: '#/components/schemas/Bootstrap53Dto')
     )]
     #[OA\Response(
         response: 200,
         description: 'Returns the file based on identifier',
         content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
-    #[Route("/download/{identifier}", name: "download", methods: ["POST"])]
-    public function download(DownloadTypeEnum $identifier, #[MapRequestPayload] VariablesDto $variablesDto): Response
+    #[Route("/bootstrap53/{identifier}")]
+    public function bootstrap53(DownloadTypeEnum $identifier, #[MapRequestPayload] Bootstrap53Dto $bootstrap53Dto): Response
     {
         return new Response(
-            content: $this->findBuilder($identifier)->build($variablesDto),
+            content: $this->findBuilder($identifier)->build($bootstrap53Dto),
             headers: [
                 'Content-Type' => $identifier->getType()->getMimeType(),
                 'Content-Disposition' => 'attachment; filename="' . $identifier->getType()->getFileName() . '"'

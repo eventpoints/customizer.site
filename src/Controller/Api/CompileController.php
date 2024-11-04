@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\VariablesDto;
+use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
 use App\Service\BootstrapCompilerService;
 use App\Service\ClassPropertyService;
 use OpenApi\Attributes as OA;
@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[OA\Tag(name: 'Compile')]
+#[Route(path: '/compile', methods: ['POST'])]
 class CompileController extends AbstractController
 {
     public function __construct(
@@ -28,7 +29,7 @@ class CompileController extends AbstractController
         required: true,
         content: new OA\MediaType(
             mediaType: 'application/json',
-            schema: new OA\Schema(ref: '#/components/schemas/VariablesDto')
+            schema: new OA\Schema(ref: '#/components/schemas/Bootstrap53Dto')
         )
     )]
     #[OA\Response(
@@ -36,10 +37,10 @@ class CompileController extends AbstractController
         description: 'Returns the json object with css',
         content: new OA\MediaType(mediaType: 'application/json')
     )]
-    #[Route(path: '/compile', name: 'compile_css', methods: ['POST'])]
-    public function compileCss(#[MapRequestPayload] VariablesDto $variablesDto): JsonResponse
+    #[Route(path: '/bootstrap53')]
+    public function compileBootstrap53(#[MapRequestPayload] Bootstrap53Dto $bootstrap53Dto): JsonResponse
     {
-        $variables = ClassPropertyService::getClassProperties(variablesDto: $variablesDto);
+        $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
         return new JsonResponse(['css' => $css]);
     }
