@@ -16,7 +16,6 @@ final readonly class ScssService
             $scssContent .= "$$name: $variable; \n";
 
         }
-        dump($scssContent);
         return $scssContent;
     }
 

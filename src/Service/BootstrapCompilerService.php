@@ -6,8 +6,8 @@ namespace App\Service;
 
 namespace App\Service;
 
+use CssMin;
 use Exception;
-use Nette\Utils\Strings;
 use Psr\Log\LoggerInterface;
 use ScssPhp\ScssPhp\Compiler;
 
@@ -51,7 +51,7 @@ class BootstrapCompilerService
         try {
             $css = $compiler->compileString($scssContent)->getCss();
             if ($isMinified) {
-                return Strings::trim($css);
+                return CssMin::minify($css);
             }
 
             return $css;
