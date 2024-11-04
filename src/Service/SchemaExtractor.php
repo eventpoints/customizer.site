@@ -11,25 +11,25 @@ class SchemaExtractor
     /**
      * @return array<string, array<string, int|float|string>>
      */
-    public function render(object $schema): array
+    public static function render(object $schema): array
     {
         $reflection = new ReflectionClass($schema);
 
         $result = [];
 
         foreach ($reflection->getProperties() as $property) {
-            if ($attribute = $this->getAttribute($property)) {
-                $result[$property->getName()] = $this->processAttribute($attribute, $property->getValue($schema));
+            if ($attribute = self::getAttribute($property)) {
+                $result[$property->getName()] = self::processAttribute($attribute, $property->getValue($schema));
             }
             $type = $property->getType();
             if (!method_exists($type, 'isBuiltin') || !$type->isBuiltin()) {
-                $result[$property->getName()] = $this->render($property->getValue($schema));
+                $result[$property->getName()] = self::render($property->getValue($schema));
             }
         }
         return $result;
     }
 
-    private function getAttribute(ReflectionProperty $property): ?OA\Property
+    private static function getAttribute(ReflectionProperty $property): ?OA\Property
     {
         foreach ($property->getAttributes(OA\Property::class) as $attribute) {
             return $attribute->newInstance();
@@ -40,7 +40,7 @@ class SchemaExtractor
     /**
      * @return array<string, int|float|string>
      */
-    private function processAttribute(OA\Property $attribute, int|float|string $defaultValue): array
+    private static function processAttribute(OA\Property $attribute, int|float|string $defaultValue): array
     {
         return [
             'description' => $attribute->description,
