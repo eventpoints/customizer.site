@@ -2,20 +2,8 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
-use App\DataTransferObject\Bootstrap53\ColorsDto;
 use App\Service\AiService;
-use App\Service\SchemaExtractor;
-use App\Service\ColorsDtoFactory;
-use LLPhant\Chat\FunctionInfo\FunctionBuilder;
-use LLPhant\Chat\FunctionInfo\FunctionInfo;
-use LLPhant\Chat\FunctionInfo\Parameter;
-use LLPhant\Chat\OllamaChat;
-use LLPhant\Chat\OpenAIChat;
-use LLPhant\OllamaConfig;
-use LLPhant\OpenAIConfig;
 use OpenApi\Attributes as OA;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;

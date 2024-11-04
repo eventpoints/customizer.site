@@ -1,15 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\DataTransferObject;
 
 use App\DataTransferObject\Bootstrap53\ColorsDto;
-use OpenApi\Attributes as OA;
 
 class AiResponseDto
 {
     public function __construct(
-        private string $response,
-        private ColorsDto $colors,
+        private readonly string $response,
+        private readonly ColorsDto $colors,
     )
     {
     }

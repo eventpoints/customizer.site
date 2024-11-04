@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
@@ -15,10 +15,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 class AiService
 {
     public function __construct(
-        private LoggerInterface $logger,
-        private ColorsDtoFactory $colorsDtoFactory,
-        private SerializerInterface $serializer,
-        private ParameterBagInterface $parameterBag,
+        private readonly LoggerInterface $logger,
+        private readonly ColorsDtoFactory $colorsDtoFactory,
+        private readonly SerializerInterface $serializer,
+        private readonly ParameterBagInterface $parameterBag,
     )
     {
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Service;
 
@@ -10,7 +10,7 @@ class ColorsDtoFactory
     private ColorsDto $colorsDto;
 
     public function __construct(
-        private SerializerInterface $serializer,
+        private readonly SerializerInterface $serializer,
     )
     {
     }
