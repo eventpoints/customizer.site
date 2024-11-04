@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
 use App\DataTransferObject\Bootstrap53\ColorsDto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,6 +13,19 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/variables', methods: ['GET'])]
 class VariablesDtoController extends AbstractController
 {
+    #[OA\Response(
+        response: 200,
+        description: 'Returns the available colors',
+        content: new OA\JsonContent(
+            ref: '#/components/schemas/Bootstrap53Dto'
+        )
+    )]
+    #[Route(path: '/bootstrap53')]
+    public function all(): JsonResponse
+    {
+        return $this->json(new Bootstrap53Dto());
+    }
+
     #[OA\Response(
         response: 200,
         description: 'Returns the available colors',
