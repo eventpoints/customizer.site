@@ -1,13 +1,14 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="id">{{ label }}</label>
+    <label class="fw-bold text-muted text-capitalize" :for="modelValue.title">{{ modelValue.label }}</label>
     <div class="input-group w-100">
-      <!-- Number input for the size value -->
+      <!-- Input for the size value with unit -->
       <input
+          :id="modelValue.title"
           type="text"
           class="form-control"
-          v-model.number="sizeValue"
-          @input="emitCombinedSize"
+          v-model="computedSize"
+          @input="emitUpdatedValue"
           aria-label="Size value input"
           placeholder="Size"
       />
@@ -17,7 +18,7 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
       >
-        {{ sizeUnit }}
+        {{ extractUnit(computedSize) }}
       </button>
 
       <!-- Dropdown menu for selecting a unit -->
@@ -38,39 +39,42 @@
 export default {
   name: "SizeInput",
   props: {
-    id: String,
-    label: String,
     modelValue: {
-      type: String,
-      default: "0.375",
+      type: Object,
+      required: true,
     },
   },
   data() {
     return {
       units: ["px", "%", "em", "rem", "vw", "vh"], // List of CSS units
-      sizeValue: 0.375,
-      sizeUnit: "rem",
     };
   },
-  watch: {
-    modelValue: {
-      immediate: true,
-      handler(newValue) {
-        const match = newValue.match(/^([\d.]+)(\D+)$/);
-        if (match) {
-          this.sizeValue = parseFloat(match[1]);
-          this.sizeUnit = match[2];
-        }
+  computed: {
+    // Computed property for size with unit, falling back to default if value is null
+    computedSize: {
+      get() {
+        return this.modelValue.value || this.modelValue.default || "0px";
+      },
+      set(newValue) {
+        this.$set(this.modelValue, "value", newValue);
       },
     },
   },
   methods: {
-    emitCombinedSize() {
-      this.$emit("update:modelValue", `${this.sizeValue}${this.sizeUnit}`);
+    emitUpdatedValue() {
+      // Emit the updated modelValue object to the parent
+      this.$emit("update:modelValue", this.modelValue);
     },
     selectUnit(unit) {
-      this.sizeUnit = unit;
-      this.emitCombinedSize();
+      // Extract the numeric part of the computed size and combine it with the selected unit
+      const valueWithoutUnit = parseFloat(this.computedSize);
+      this.computedSize = `${valueWithoutUnit}${unit}`;
+      this.emitUpdatedValue();
+    },
+    extractUnit(value) {
+      // Extract the unit from the given value
+      const match = value.match(/[a-zA-Z%]+$/);
+      return match ? match[0] : "px";
     },
   },
 };

@@ -1,4 +1,4 @@
-import {reactive, computed} from 'vue';
+import { reactive } from 'vue';
 
 const state = reactive({
     variables: {},
@@ -7,7 +7,8 @@ const state = reactive({
     sourcesOptions: [
         '/examples/example.bootstrap.5.3.html',
         '/examples/custom.html',
-    ]
+    ],
+    lockedColors: {}, // Track which colors are locked
 });
 
 export const store = {
@@ -42,5 +43,31 @@ export const store = {
     },
     set isLoading(value) {
         state.isLoading = value;
+    },
+
+    // Method to update locked state for specific keys
+    updateLock(id, locked) {
+        state.lockedColors[id] = locked;
+    },
+
+    // Function to set random color values, excluding locked colors
+    setRandomColorVariables() {
+        Object.keys(state.variables.colors).forEach((key) => {
+            const colorItem = state.variables.colors[key];
+            if (!state.lockedColors[key] && colorItem.type === 'color') {
+                colorItem.value = `#${Math.floor(Math.random() * 16777215)
+                    .toString(16)
+                    .padStart(6, '0')}`;
+            }
+        });
+    },
+
+    resetDefaults(sectionKey) {
+        if (state.variables[sectionKey]) {
+            Object.keys(state.variables[sectionKey]).forEach((key) => {
+                const item = state.variables[sectionKey][key];
+                item.default = item.default;
+            });
+        }
     },
 };

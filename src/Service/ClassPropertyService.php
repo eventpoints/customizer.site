@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DataTransferObject\InputDto;
 use App\DataTransferObject\RootDtoInterface;
 use ReflectionClass;
 
@@ -9,7 +10,7 @@ final readonly class ClassPropertyService
 {
     /**
      * @param RootDtoInterface $rootDto
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public static function getClassProperties(RootDtoInterface $rootDto): array
     {
@@ -17,20 +18,22 @@ final readonly class ClassPropertyService
     }
 
     /**
-     * @return array<string, string>
+     * Recursively extract `title => value` pairs from the DTO structure.
+     *
+     * @return array<string, string|null>
      */
     private static function extractValues(object $dto): array
     {
-
         $reflectionClass = new ReflectionClass($dto);
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            $type = $property->getType();
-            if (method_exists($type, 'isBuiltin')  && $type->isBuiltin()) {
-                $properties[$property->getName()] = $property->getValue($dto);
-            } else {
-                $properties = array_merge($properties, self::extractValues($property->getValue($dto)));
+            $propertyValue = $property->getValue($dto);
+
+            if ($propertyValue instanceof InputDto && !empty($propertyValue->getValue())) {
+                $properties[$property->getName()] = $propertyValue->getValue();
+            } elseif (is_object($propertyValue)) {
+                $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
             }
         }
 

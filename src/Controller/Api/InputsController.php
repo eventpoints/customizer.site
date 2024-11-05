@@ -2,8 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
-use App\Service\SchemaExtractor;
+use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,6 +19,9 @@ class InputsController extends AbstractController
     #[Route(path: '/bootstrap53')]
     public function bootstrap53(): JsonResponse
     {
-        return $this->json(SchemaExtractor::render(new Bootstrap53Dto()));
+        return $this->json(
+            data: new CustomizerFormBootstrap53Dto(),
+            context: ['groups' => 'form']
+        );
     }
 }
