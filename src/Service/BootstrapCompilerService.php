@@ -7,18 +7,10 @@ namespace App\Service;
 namespace App\Service;
 
 use CssMin;
-use Psr\Log\LoggerInterface;
 use ScssPhp\ScssPhp\Compiler;
 
 class BootstrapCompilerService
 {
-
-    public function __construct(
-        private readonly LoggerInterface $logger
-    )
-    {
-    }
-
     /**
      * @param array<string, string> $variables
      * @return string

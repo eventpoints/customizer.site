@@ -1,14 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Attributes;
 
 use App\Enumerators\InputTypeEnum;
 use Attribute;
+use OpenApi\Attributes as OA;
 use OpenApi\Attributes\AdditionalProperties;
 use OpenApi\Attributes\Attachable;
-use OpenApi\Attributes\Discriminator;
-use OpenApi\Attributes\ExternalDocumentation;
-use OpenApi\Attributes\Items;
 use OpenApi\Attributes\Property;
 use OpenApi\Attributes\Schema;
 use OpenApi\Attributes\Xml;
@@ -45,12 +43,11 @@ class ApiProperty extends Property
         ?array $properties = null,
         string|array|null $type = null,
         ?string $format = null,
-        ?Items $items = null,
         ?string $collectionFormat = null,
         mixed $default = Generator::UNDEFINED,
-        $maximum = null,
+        mixed $maximum = null,
         bool|int|float|null $exclusiveMaximum = null,
-        $minimum = null,
+        bool|int|float|null $minimum = null,
         bool|int|float|null $exclusiveMinimum = null,
         ?int $maxLength = null,
         ?int $minLength = null,
@@ -59,11 +56,9 @@ class ApiProperty extends Property
         ?bool $uniqueItems = null,
         ?string $pattern = null,
         array|string|null $enum = null,
-        ?Discriminator $discriminator = null,
         ?bool $readOnly = null,
         ?bool $writeOnly = null,
         ?Xml $xml = null,
-        ?ExternalDocumentation $externalDocs = null,
         mixed $example = Generator::UNDEFINED,
         ?bool $nullable = null,
         ?bool $deprecated = null,
@@ -75,7 +70,7 @@ class ApiProperty extends Property
         ?array $x = null,
         ?array $attachables = null,
         // extends
-        private ?InputTypeEnum $inputType = null,
+        private readonly ?InputTypeEnum $inputType = null,
     ) {
         parent::__construct(
             property: $property,
