@@ -36,7 +36,7 @@
               >
                 {{ sectionKey.replace(/([A-Z])/g, ' $1') }}
               </a>
-              <a class=" btn btn-light rounded-circle bi bi-shuffle" @click="randomizeColors"></a>
+              <a v-if="sectionKey === 'colors'" class="btn btn-light rounded-circle bi bi-shuffle" @click="randomizeColors"></a>
             </div>
             <div
                 :id="'collapse' + sectionKey"
@@ -44,7 +44,7 @@
                 :aria-labelledby="'heading' + sectionKey"
                 data-bs-parent="#customizerAccordion"
             >
-              <div class="">
+              <div>
                 <!-- Loop over each variable in the section and render appropriate input -->
                 <div
                     v-for="(value, key) in section"
@@ -53,25 +53,61 @@
                 >
                   <!-- Render ColorPickerInput if it's a color -->
                   <ColorPickerInput
-                      v-if="isColor(value)"
-                      :label="key.replace(/([A-Z])/g, ' $1')"
+                      v-if="value.type === 'color'"
+                      :label="value.description"
                       :id="key"
                       v-model="store.variables[sectionKey][key]"
-                      @update-lock="handleLockUpdate"
+                      :colorMap="store.variables.colors"
+                  @update-lock="handleLockUpdate"
                   />
-
                   <!-- Render SizeInput if it's a size -->
                   <SizeInput
-                      v-else-if="isSize(value)"
-                      :label="key.replace(/([A-Z])/g, ' $1')"
+                      v-else-if="value.type === 'size'"
+                      :label="value.description"
                       :id="key"
                       v-model="store.variables[sectionKey][key]"
                   />
+
+                  <!-- Render SwitchInput if it's a boolean -->
+                  <SwitchInput
+                      v-else-if="value.type === 'boolean'"
+                      :label="value.description"
+                      :id="key"
+                      v-model="store.variables[sectionKey][key]"
+                  />
+
+                  <!-- Render input for float type -->
+                  <input
+                      v-else-if="value.type === 'float'"
+                      type="number"
+                      step="0.1"
+                      :placeholder="value.description"
+                      v-model.number="store.variables[sectionKey][key].default"
+                      class="form-control"
+                  />
+
+                  <!-- Render text input for string type -->
+                  <input
+                      v-else-if="value.type === 'string'"
+                      type="text"
+                      :placeholder="value.description"
+                      v-model="store.variables[sectionKey][key].default"
+                      class="form-control"
+                  />
+
+                  <!-- Render text area for gradient type -->
+                  <textarea
+                      v-else-if="value.type === 'gradient'"
+                      :placeholder="value.description"
+                      v-model="store.variables[sectionKey][key].default"
+                      class="form-control"
+                  ></textarea>
+
+                  <!-- Add more conditions if there are other specific types -->
                 </div>
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="list-group-item">
@@ -83,8 +119,7 @@
 
     <template #main>
 
-      {{store.variables}}
-
+      {{ store.variables.colors }}
       <div class="vh-100" style="position: relative;">
         <div v-if="store.isLoading" class="d-flex min-vh-100 bg-white w-100 justify-content-center align-items-center">
           <div class="spinner-border" role="status">
@@ -104,23 +139,23 @@
 <script>
 import ColorPickerInput from '../Input/ColorPickerInput.vue';
 import SizeInput from "../Input/SizeInput.vue";
+import SwitchInput from "../Input/SwitchInput.vue";
 import AppLayout from '../AppLayout.vue';
 import axios from "axios";
-import {store} from '../../Store/store';
-import {watch, ref, onMounted, computed} from 'vue';
+import { store } from '../../Store/store';
+import { watch, ref, onMounted, computed } from 'vue';
+import AutocompleteInput from "../Input/AutocompleteInput.vue";
 
 export default {
   setup() {
     const previewFrame = ref(null);
 
-    // Helper to check if the value is a color (assumes a hex format)
-    const isColor = (value) => /^#[0-9A-Fa-f]{6}$/.test(value);
-    const isSize = (value) => typeof value === 'string' && value.includes('rem');
-
     const compile = async () => {
       store.isLoading = true;
-      await axios.post('api/v1/compile/bootstrap53', store.variables).then((response) => {
-        store.css = response.data.css;
+      await axios.post('/api/v1/compile/bootstrap53', store.variables).then((response) => {
+        // store.css = response.data.css;
+
+
         applyCss(store.css);
       }).finally(() => {
         store.isLoading = false;
@@ -141,7 +176,7 @@ export default {
       store.setRandomColorVariables();
     };
 
-    const handleLockUpdate = ({id, locked}) => {
+    const handleLockUpdate = ({ id, locked }) => {
       store.updateLock(id, locked);
     };
 
@@ -151,22 +186,22 @@ export default {
     watch(
         () => store.variables,
         compile,
-        {deep: true}
+        { deep: true }
     );
 
     watch(sourcesOptions, (newOptions) => {
       if (newOptions.length > 0 && !newOptions.includes(selectedSrc.value)) {
         selectedSrc.value = newOptions[0];
       }
-    }, {immediate: true});
+    }, { immediate: true });
 
     watch(selectedSrc, () => {
       compile();
     });
 
     onMounted(async () => {
-      await axios.get('/api/v1/variables/bootstrap53').then((response) => {
-        store.variables = response.data; // Update colors dynamically
+      await axios.get('/api/v1/inputs/bootstrap53').then((response) => {
+        store.variables = response.data;
       });
     });
 
@@ -177,18 +212,17 @@ export default {
       selectedSrc,
       randomizeColors,
       handleLockUpdate,
-      isColor,
-      isSize
     };
   },
   components: {
+    AutocompleteInput,
+    SwitchInput,
     SizeInput,
     ColorPickerInput,
     AppLayout
   }
 };
 </script>
-
 
 <style lang="css" scoped>
 </style>

@@ -48,18 +48,29 @@ export const store = {
         state.isLoading = value;
     },
 
-    // Method to update locked state for specific color keys
+    // Method to update locked state for specific keys
     updateLock(id, locked) {
         state.lockedColors[id] = locked;
     },
 
+    // Function to set random color values, excluding locked colors
     setRandomColorVariables() {
         Object.keys(state.variables.colors).forEach((key) => {
-            if (!state.lockedColors[key]) {
-                state.variables.colors[key] = `#${Math.floor(Math.random() * 16777215)
+            const colorItem = state.variables.colors[key];
+            if (!state.lockedColors[key] && colorItem.type === 'color') {
+                colorItem.default = `#${Math.floor(Math.random() * 16777215)
                     .toString(16)
                     .padStart(6, '0')}`;
             }
         });
+    },
+
+    resetDefaults(sectionKey) {
+        if (state.variables[sectionKey]) {
+            Object.keys(state.variables[sectionKey]).forEach((key) => {
+                const item = state.variables[sectionKey][key];
+                item.default = item.default;
+            });
+        }
     },
 };
