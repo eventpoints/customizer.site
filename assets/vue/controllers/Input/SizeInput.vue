@@ -74,6 +74,11 @@ export default {
       this.unit = selectedUnit;
       this.updateSize();
     },
+    extractUnit(value) {
+      // Extract and display the current unit from the value
+      const match = value.match(/[a-zA-Z%]+$/);
+      return match ? match[0] : "px";
+    },
   },
 };
 </script>
