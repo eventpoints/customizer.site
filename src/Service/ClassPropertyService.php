@@ -33,7 +33,7 @@ final readonly class ClassPropertyService
              */
             $propertyValue = $property->getValue($dto);
 
-            if ($propertyValue instanceof InputDto && empty($propertyValue->getValue())) {
+            if ($propertyValue instanceof InputDto && !empty($propertyValue->getValue())) {
                 $properties[$property->getName()] = $propertyValue->getValue();
             } elseif (is_object($propertyValue)) {
                 $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
