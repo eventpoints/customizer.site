@@ -1,8 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace App\DataTransferObject\Bootstrap53;
+namespace App\DataTransferObject;
 
-use App\Attributes\ApiProperty;
 use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -17,19 +16,19 @@ final readonly class InputDto
 
     /**
      * @param string|null $label
-     * @param string|null $type
-     * @param string|null $default
-     * @param string|null $value
+     * @param InputTypeEnum|null $type
+     * @param string|bool|float|int|null $default
+     * @param string|bool|float|int|null $value
      */
     public function __construct(
         #[Groups(['form'])]
-        private null|string $label,
+        private ?string $label = null,
         #[Groups(['form'])]
-        private null|string $type,
+        private ?InputTypeEnum $type = null,
         #[Groups(['form'])]
-        private null|string $default,
+        private null|string|bool|float|int $default = null,
         #[Groups(['form', 'compile'])]
-        private null|string $value = null
+        private null|string|bool|float|int $value = null
     )
     {
     }
@@ -39,19 +38,18 @@ final readonly class InputDto
         return $this->label;
     }
 
-    public function getType(): ?string
+    public function getType(): ?InputTypeEnum
     {
         return $this->type;
     }
 
-    public function getDefault(): ?string
+    public function getDefault(): float|bool|int|string|null
     {
         return $this->default;
     }
 
-    public function getValue(): ?string
+    public function getValue(): float|bool|int|string|null
     {
         return $this->value;
     }
-
 }

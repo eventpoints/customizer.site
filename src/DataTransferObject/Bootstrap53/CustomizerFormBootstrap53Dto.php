@@ -14,6 +14,7 @@ final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
 {
     public function __construct(
         private ColorsDto $colors = new ColorsDto(),
+        private GeneralDto $general = new GeneralDto(),
     )
     {
     }
@@ -21,6 +22,11 @@ final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
     public function getColors(): ColorsDto
     {
         return $this->colors;
+    }
+
+    public function getGeneral(): GeneralDto
+    {
+        return $this->general;
     }
 
 }

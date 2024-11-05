@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\DataTransferObject\Bootstrap53\InputDto;
+use App\DataTransferObject\InputDto;
 use App\DataTransferObject\RootDtoInterface;
 use ReflectionClass;
 
@@ -26,14 +26,12 @@ final readonly class ClassPropertyService
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            if ($property->getType() instanceof InputDto) {
+            /** @var InputDto $propertyValue */
+            $propertyValue = $property->getValue($dto);
 
-                /**
-                 * @var InputDto $inputDto
-                 */
-                $inputDto = $property->getValue($dto);
-                $properties[$property->getName()] = $inputDto->getValue();
-            } elseif (is_object($property->getValue(object: $dto))) {
+            if ($propertyValue instanceof InputDto && $propertyValue->getValue()) {
+                $properties[$property->getName()] = $propertyValue->getValue();
+            } elseif (is_object($propertyValue)) {
                 $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
             }
         }
