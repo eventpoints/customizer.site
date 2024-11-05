@@ -15,7 +15,7 @@ final readonly class GeneralDto
     public function __construct(
         #[OA\Property(
             description: 'Border radius',
-            type: InputTypeEnum::RADIUS->value
+            type: InputTypeEnum::SIZE->value
         )]
         private null|string $borderRadius = "0.375rem",
         #[OA\Property(
