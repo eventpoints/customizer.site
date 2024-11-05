@@ -7,7 +7,6 @@ namespace App\Service;
 namespace App\Service;
 
 use CssMin;
-use Exception;
 use Psr\Log\LoggerInterface;
 use ScssPhp\ScssPhp\Compiler;
 
@@ -33,14 +32,14 @@ class BootstrapCompilerService
      * @param array<string, string> $variables
      * @return string
      */
-    public function compileCustomBootstrap(array $variables, bool $isMinified = false): null|string
+    public function compileCustomBootstrap(array $variables, bool $isMinified = false): string
     {
         $scssString = ScssService::arrayToScssString(variables: $variables);
 
         $scssContent = <<<SCSS
-    $scssString
     @import "functions";
     @import "variables";
+    $scssString
     @import "mixins";
     @import "bootstrap";
     SCSS;
@@ -48,18 +47,12 @@ class BootstrapCompilerService
         $compiler = new Compiler();
         $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
 
-        try {
-            $css = $compiler->compileString($scssContent)->getCss();
-            if ($isMinified) {
-                return CssMin::minify($css);
-            }
-
-            return $css;
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
+        $css = $compiler->compileString($scssContent)->getCss();
+        if ($isMinified) {
+            return CssMin::minify($css);
         }
 
-        return null;
+        return $css;
     }
 
 }

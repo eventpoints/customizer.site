@@ -2,6 +2,7 @@
 
 namespace App\DataTransferObject\Bootstrap53;
 
+use App\Attributes\ApiProperty;
 use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
 
@@ -13,194 +14,194 @@ final readonly class GeneralDto
 {
 
     public function __construct(
-        #[OA\Property(
-            description: 'Border radius',
-            type: InputTypeEnum::SIZE->value
+        #[ApiProperty(
+            title: 'Border radius',
+            inputType: InputTypeEnum::SIZE
         )]
         private null|string $borderRadius = "0.375rem",
-        #[OA\Property(
-            description: 'Min contrast ratio',
-            type: InputTypeEnum::FLOAT->value,
+        #[ApiProperty(
+            title: 'Min contrast ratio',
+            inputType: InputTypeEnum::FLOAT,
         )]
         private null|float  $minContrastRatio = 4.5,
-        #[OA\Property(
-            description: 'Enable caret',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable caret',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableCaret = true,
-        #[OA\Property(
-            description: 'Enable rounded',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable rounded',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableRounded = true,
-        #[OA\Property(
-            description: 'Enable shadows',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable shadows',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableShadows = false,
-        #[OA\Property(
-            description: 'Enable gradients',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable gradients',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableGradients = false,
-        #[OA\Property(
-            description: 'Enable transitions',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable transitions',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableTransitions = true,
-        #[OA\Property(
-            description: 'Enable reduced motion',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable reduced motion',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableReducedMotion = true,
-        #[OA\Property(
-            description: 'Enable smooth scroll',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable smooth scroll',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableSmoothScroll = true,
-        #[OA\Property(
-            description: 'Enable grid classes',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable grid classes',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableGridClasses = true,
-        #[OA\Property(
-            description: 'Enable container classes',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable container classes',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableContainerClasses = true,
-        #[OA\Property(
-            description: 'Enable cssgrid',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable cssgrid',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableCssgrid = false,
-        #[OA\Property(
-            description: 'Enable button pointers',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable button pointers',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableButtonPointers = true,
-        #[OA\Property(
-            description: 'Enable rfs',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable rfs',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableRfs = true,
-        #[OA\Property(
-            description: 'Enable validation icons',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable validation icons',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableValidationIcons = true,
-        #[OA\Property(
-            description: 'Enable negative margins',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable negative margins',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableNegativeMargins = false,
-        #[OA\Property(
-            description: 'Enable deprecation messages',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable deprecation messages',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableDeprecationMessages = true,
-        #[OA\Property(
-            description: 'Enable important utilities',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable important utilities',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableImportantUtilities = true,
-        #[OA\Property(
-            description: 'Enable dark mode',
-            type: InputTypeEnum::BOOLEAN->value,
+        #[ApiProperty(
+            title: 'Enable dark mode',
+            inputType: InputTypeEnum::BOOLEAN,
         )]
         private null|bool   $enableDarkMode = true,
-        #[OA\Property(
-            description: 'Color mode type',
-            type: InputTypeEnum::STRING->value,
+        #[ApiProperty(
+            title: 'Color mode type',
+            inputType: InputTypeEnum::STRING,
         )]
         private null|string $colorModeType = 'data',
-        #[OA\Property(
-            description: 'Variable prefix',
-            type: InputTypeEnum::STRING->value,
+        #[ApiProperty(
+            title: 'Variable prefix',
+            inputType: InputTypeEnum::STRING,
         )]
         private null|string $variablePrefix = 'bs-',
-        #[OA\Property(
-            description: 'Prefix',
-            type: InputTypeEnum::STRING->value,
+        #[ApiProperty(
+            title: 'Prefix',
+            inputType: InputTypeEnum::STRING,
         )]
         private null|string $prefix = '$variable-prefix',
-        #[OA\Property(
-            description: 'Gradient',
-            type: InputTypeEnum::GRADIENT->value,
+        #[ApiProperty(
+            title: 'Gradient',
+            inputType: InputTypeEnum::GRADIENT,
         )]
         private null|string $gradient = 'linear-gradient(180deg, rgba($white, .15), rgba($white, 0))',
-        #[OA\Property(
-            description: 'Spacer',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Spacer',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $spacer = '1rem',
-        #[OA\Property(
-            description: 'Body text align',
-            type: InputTypeEnum::STRING->value,
+        #[ApiProperty(
+            title: 'Body text align',
+            inputType: InputTypeEnum::STRING,
         )]
         private null|string $bodyTextAlign = 'null',
-        #[OA\Property(
-            description: 'Paragraph margin bottom',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Paragraph margin bottom',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $paragraphMarginBottom = '1rem',
-        #[OA\Property(
-            description: 'Container padding x',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Container padding x',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $containerPaddingX = '$grid-gutter-width',
-        #[OA\Property(
-            description: 'Text muted',
-            type: InputTypeEnum::COLOR->value,
+        #[ApiProperty(
+            title: 'Text muted',
+            inputType: InputTypeEnum::COLOR,
         )]
         private null|string $textMuted = 'var(--#{$prefix}secondary-color)',
-        #[OA\Property(
-            description: 'Vr border width',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Vr border width',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $vrBorderWidth = 'var(--#{$prefix}border-width)',
-        #[OA\Property(
-            description: 'Code font size',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Code font size',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $codeFontSize = '$small-font-size',
-        #[OA\Property(
-            description: 'Code color',
-            type: InputTypeEnum::COLOR->value,
+        #[ApiProperty(
+            title: 'Code color',
+            inputType: InputTypeEnum::COLOR,
         )]
         private null|string $codeColor = '$pink',
-        #[OA\Property(
-            description: 'Kbd padding y',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Kbd padding y',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $kbdPaddingY = '.1875rem',
-        #[OA\Property(
-            description: 'Kbd padding x',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Kbd padding x',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $kbdPaddingX = '.375rem',
-        #[OA\Property(
-            description: 'Kbd font size',
-            type: InputTypeEnum::SIZE->value,
+        #[ApiProperty(
+            title: 'Kbd font size',
+            inputType: InputTypeEnum::SIZE,
         )]
         private null|string $kbdFontSize = '$code-font-size',
-        #[OA\Property(
-            description: 'Kbd color',
-            type: InputTypeEnum::COLOR->value,
+        #[ApiProperty(
+            title: 'Kbd color',
+            inputType: InputTypeEnum::COLOR,
         )]
         private null|string $kbdColor = 'var(--#{$prefix}body-bg)',
-        #[OA\Property(
-            description: 'Kbd bg',
-            type: InputTypeEnum::COLOR->value,
+        #[ApiProperty(
+            title: 'Kbd bg',
+            inputType: InputTypeEnum::COLOR,
         )]
         private null|string $kbdBg = 'var(--#{$prefix}body-color)',
-        #[OA\Property(
-            description: 'Nested kbd font weight',
-            type: InputTypeEnum::STRING->value,
+        #[ApiProperty(
+            title: 'Nested kbd font weight',
+            inputType: InputTypeEnum::STRING,
         )]
         private null|string $nestedKbdFontWeight = 'null',
-        #[OA\Property(
-            description: 'Pre color',
-            type: InputTypeEnum::COLOR->value,
+        #[ApiProperty(
+            title: 'Pre color',
+            inputType: InputTypeEnum::COLOR,
         )]
         private null|string $preColor = 'null',
     )

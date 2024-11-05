@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
+use App\Attributes\ApiProperty;
 use ReflectionClass;
-use OpenApi\Attributes as OA;
 use ReflectionProperty;
 
 class SchemaExtractor
@@ -29,9 +29,9 @@ class SchemaExtractor
         return $result;
     }
 
-    private static function getAttribute(ReflectionProperty $property): ?OA\Property
+    private static function getAttribute(ReflectionProperty $property): ?ApiProperty
     {
-        foreach ($property->getAttributes(OA\Property::class) as $attribute) {
+        foreach ($property->getAttributes(ApiProperty::class) as $attribute) {
             return $attribute->newInstance();
         }
         return null;
@@ -40,11 +40,11 @@ class SchemaExtractor
     /**
      * @return array<string, int|float|string|bool>
      */
-    private static function processAttribute(OA\Property $attribute, int|float|string|bool $defaultValue): array
+    private static function processAttribute(ApiProperty $attribute, int|float|string|bool $defaultValue): array
     {
         return [
-            'description' => $attribute->description,
-            'type' => $attribute->type,
+            'description' => $attribute->title,
+            'type' => $attribute->getInputType()->value,
             'default' => $defaultValue,
         ];
     }

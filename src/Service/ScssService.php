@@ -13,10 +13,17 @@ final readonly class ScssService
         $scssContent = "";
         foreach ($variables as $key => $variable) {
             $name = strtolower((string)preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
-            $scssContent .= "$$name: $variable; \n";
+            $scssContent .= sprintf("$%s: %s; \n", $name, self::formatVariable($variable));
 
         }
         return $scssContent;
     }
 
+    private static function formatVariable(mixed $variable): string
+    {
+        return match (gettype($variable)) {
+            'boolean' => $variable? 'true' : 'false',
+            default => (string)$variable,
+        };
+    }
 }
