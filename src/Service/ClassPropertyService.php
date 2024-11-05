@@ -28,16 +28,15 @@ final readonly class ClassPropertyService
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            $property->setAccessible(accessible: true);
             /**
              * @var InputDto $inputDto
              */
-            $inputDto = $property->getValue($dto);
+            $propertyValue = $property->getValue($dto);
 
-            if ($inputDto instanceof InputDto && !empty($inputDto->getValue())) {
-                $properties[$property->getName()] = $inputDto->getValue();
-            } elseif (is_object($inputDto)) {
-                $properties = array_merge($properties, self::extractValues($inputDto));
+            if ($propertyValue instanceof InputDto && empty($propertyValue->getValue())) {
+                $properties[$property->getName()] = $propertyValue->getValue();
+            } elseif (is_object($propertyValue)) {
+                $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
             }
         }
 
