@@ -52,6 +52,7 @@
                     class="list-group-item"
                 >
                   <!-- Render ColorPickerInput if it's a color -->
+
                   <ColorPickerInput
                       v-if="value.type === 'color'"
                       :label="value.description"
@@ -118,9 +119,6 @@
     </template>
 
     <template #main>
-
-      {{ store.variables.colors }}
-      {{ store.css }}
       <div class="vh-100" style="position: relative;">
         <div v-if="store.isLoading" class="d-flex min-vh-100 bg-white w-100 justify-content-center align-items-center">
           <div class="spinner-border" role="status">
@@ -153,9 +151,8 @@ export default {
 
     const compile = async () => {
       store.isLoading = true;
-      const variables = generateDefaultJSON(store.variables)
-      await axios.post('/api/v1/compile/bootstrap53', variables).then((response) => {
-        store.css = response.data.css;
+      await axios.post('/api/v1/compile/bootstrap53', store.variables).then((response) => {
+        store.css = response.data;
         applyCss(store.css);
       }).finally(() => {
         store.isLoading = false;
@@ -212,6 +209,7 @@ export default {
 
     onMounted(async () => {
       await axios.get('/api/v1/inputs/bootstrap53').then((response) => {
+        console.log(response.data)
         store.variables = response.data;
       });
     });

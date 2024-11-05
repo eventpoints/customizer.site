@@ -30,8 +30,8 @@ class BootstrapCompilerService
 
         $scssContent = <<<SCSS
     @import "functions";
-    @import "variables";
     $scssString
+    @import "variables";
     @import "mixins";
     @import "bootstrap";
     SCSS;

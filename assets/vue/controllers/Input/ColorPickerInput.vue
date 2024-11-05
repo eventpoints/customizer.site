@@ -1,7 +1,7 @@
 <template>
   <div>
     <label class="fw-bold text-muted text-capitalize" :for="id">
-      <span>{{ label }}</span>
+      <span>{{ modelValue.label }}</span>
       <!-- Lock icon toggle -->
       <i
           :class="locked ? 'bi bi-lock-fill' : 'bi bi-unlock-fill'"
@@ -53,8 +53,6 @@
 export default {
   name: 'ColorPickerInput',
   props: {
-    id: String,
-    label: String,
     modelValue: {
       type: Object,
       required: true,
@@ -66,7 +64,7 @@ export default {
   },
   data() {
     return {
-      inputValue: this.modelValue.default || '#000000',
+      inputValue: this.modelValue.value || this.modelValue.default || '#000000',
       locked: false, // Track locked state
       showSuggestions: false, // Control visibility of autocomplete dropdown
     };
@@ -78,30 +76,17 @@ export default {
           variable.toLowerCase().includes(this.inputValue.toLowerCase())
       );
     },
-    // Computed color value specifically for the color picker, dynamically resolving if inputValue is a variable
+    // Computed color value for the color picker, using `value` if set, otherwise falling back to `default`
     currentColor() {
-      if (this.isColorVariable(this.modelValue.default)) {
-        const variable = this.modelValue.default;
-        return this.colorMap[variable]?.default || '#000000';
-      }
-      return this.isHexColor(this.modelValue.default) ? this.modelValue.default : '#000000';
+      return this.isHexColor(this.modelValue.value) ? this.modelValue.value : this.modelValue.default || '#000000';
     },
   },
   watch: {
-    // Deep watch to track any changes to modelValue, including external changes like color randomizer
+    // Watch for changes in modelValue and update inputValue accordingly
     modelValue: {
       deep: true,
       handler(newValue) {
-        this.inputValue = newValue.default;
-      },
-    },
-    // Watch colorMap to react to any changes in referenced colors
-    colorMap: {
-      deep: true,
-      handler() {
-        if (this.isColorVariable(this.modelValue.default)) {
-          this.$emit('update:modelValue', this.modelValue); // Trigger reactivity on referenced color change
-        }
+        this.inputValue = newValue.value || newValue.default || '#000000';
       },
     },
   },
@@ -112,9 +97,12 @@ export default {
       this.updateModelWithInput(this.inputValue);
     },
     selectSuggestion(variable) {
-      // Store the variable name as default (e.g., "$primary") for dynamic referencing
-      this.inputValue = variable;
-      this.updateModelWithInput(variable);
+      // Update input with hex value of selected SCSS variable and close dropdown
+      const hex = this.colorMap[variable]?.default;
+      if (hex && this.isHexColor(hex)) {
+        this.inputValue = hex;
+        this.updateModelWithInput(hex);
+      }
       this.showSuggestions = false;
     },
     updateColorPicker(event) {
@@ -126,8 +114,8 @@ export default {
       }
     },
     updateModelWithInput(value) {
-      // Update modelValue.default with either a hex color or SCSS variable
-      this.modelValue.default = value;
+      // Update modelValue.value with the provided value (either hex or SCSS variable)
+      this.modelValue.value = value;
       this.$emit('update:modelValue', this.modelValue);
     },
     toggleLock() {
@@ -138,10 +126,6 @@ export default {
     isHexColor(value) {
       // Check if the value is a valid hex color
       return /^#[0-9A-Fa-f]{6}$|^#[0-9A-Fa-f]{3}$/.test(value);
-    },
-    isColorVariable(value) {
-      // Check if the value is an SCSS variable (starts with "$")
-      return typeof value === 'string' && value.startsWith('$');
     },
   },
 };

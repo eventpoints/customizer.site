@@ -40,11 +40,7 @@ class CompileController extends AbstractController
     #[Route(path: '/bootstrap53')]
     public function compileBootstrap53(#[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto): JsonResponse
     {
-
-        dump($bootstrap53Dto);
         $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
-        dump($variables);
-
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
         return new JsonResponse(data: $css);
     }

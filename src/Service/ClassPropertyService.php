@@ -10,7 +10,7 @@ final readonly class ClassPropertyService
 {
     /**
      * @param RootDtoInterface $rootDto
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public static function getClassProperties(RootDtoInterface $rootDto): array
     {
@@ -18,7 +18,9 @@ final readonly class ClassPropertyService
     }
 
     /**
-     * @return array<string, string>
+     * Recursively extract `title => value` pairs from the DTO structure.
+     *
+     * @return array<string, string|null>
      */
     private static function extractValues(object $dto): array
     {
@@ -26,15 +28,16 @@ final readonly class ClassPropertyService
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            if ($property->getType() instanceof InputDto) {
+            $property->setAccessible(accessible: true);
+            /**
+             * @var InputDto $inputDto
+             */
+            $inputDto = $property->getValue($dto);
 
-                /**
-                 * @var InputDto $inputDto
-                 */
-                $inputDto = $property->getValue($dto);
+            if ($inputDto instanceof InputDto && !empty($inputDto->getValue())) {
                 $properties[$property->getName()] = $inputDto->getValue();
-            } elseif (is_object($property->getValue(object: $dto))) {
-                $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
+            } elseif (is_object($inputDto)) {
+                $properties = array_merge($properties, self::extractValues($inputDto));
             }
         }
 

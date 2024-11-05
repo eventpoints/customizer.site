@@ -20,7 +20,7 @@ final readonly class ColorsDto
      * @param InputDto $primary
      */
     public function __construct(
-        private InputDto $bodyBg = new InputDto(label: 'Body bg', type: InputTypeEnum::COLOR->value, default: '#ffffff', value: '#999999'),
+        private InputDto $bodyBg = new InputDto(label: 'Body bg', type: InputTypeEnum::COLOR->value, default: '#ffffff'),
         private InputDto $primary = new InputDto(label: 'primary color', type: InputTypeEnum::COLOR->value, default: '#0d6efd'),
     )
     {

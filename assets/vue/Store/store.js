@@ -1,10 +1,7 @@
 import { reactive } from 'vue';
 
 const state = reactive({
-    variables: {
-        colors: {},
-        general: {}
-    },
+    variables: {},
     css: null,
     isLoading: true,
     sourcesOptions: [
@@ -58,7 +55,7 @@ export const store = {
         Object.keys(state.variables.colors).forEach((key) => {
             const colorItem = state.variables.colors[key];
             if (!state.lockedColors[key] && colorItem.type === 'color') {
-                colorItem.default = `#${Math.floor(Math.random() * 16777215)
+                colorItem.value = `#${Math.floor(Math.random() * 16777215)
                     .toString(16)
                     .padStart(6, '0')}`;
             }
