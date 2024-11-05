@@ -4,13 +4,13 @@
     <input
         class="form-check-input"
         type="checkbox"
-        :id="id"
-        v-model="modelValue.default"
+        :id="modelValue.label"
+        v-model="computedValue"
         @change="emitUpdatedValue"
         role="switch"
     />
     <!-- Label for the switch -->
-    <label class="form-check-label" :for="id">{{ label }}</label>
+    <label class="form-check-label" :for="modelValue.label">{{ modelValue.label }}</label>
   </div>
 </template>
 
@@ -18,11 +18,20 @@
 export default {
   name: 'SwitchInput',
   props: {
-    id: String,
-    label: String,
     modelValue: {
       type: Object,
       required: true,
+    },
+  },
+  computed: {
+    // Computed property to access value or fallback to default
+    computedValue: {
+      get() {
+        return this.modelValue.value ?? this.modelValue.default;
+      },
+      set(newValue) {
+        this.$set(this.modelValue, 'value', newValue);
+      },
     },
   },
   methods: {

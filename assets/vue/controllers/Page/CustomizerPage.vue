@@ -36,7 +36,8 @@
               >
                 {{ sectionKey.replace(/([A-Z])/g, ' $1') }}
               </a>
-              <a v-if="sectionKey === 'colors'" class="btn btn-light rounded-circle bi bi-shuffle" @click="randomizeColors"></a>
+              <a v-if="sectionKey === 'colors'" class="btn btn-light rounded-circle bi bi-shuffle"
+                 @click="randomizeColors"></a>
             </div>
             <div
                 :id="'collapse' + sectionKey"
@@ -55,25 +56,19 @@
 
                   <ColorPickerInput
                       v-if="value.type === 'color'"
-                      :label="value.description"
-                      :id="key"
                       v-model="store.variables[sectionKey][key]"
                       :colorMap="store.variables.colors"
-                  @update-lock="handleLockUpdate"
+                      @update-lock="handleLockUpdate"
                   />
                   <!-- Render SizeInput if it's a size -->
                   <SizeInput
                       v-else-if="value.type === 'size'"
-                      :label="value.description"
-                      :id="key"
                       v-model="store.variables[sectionKey][key]"
                   />
 
                   <!-- Render SwitchInput if it's a boolean -->
                   <SwitchInput
                       v-else-if="value.type === 'boolean'"
-                      :label="value.description"
-                      :id="key"
                       v-model="store.variables[sectionKey][key]"
                   />
 
@@ -86,25 +81,6 @@
                       v-model.number="store.variables[sectionKey][key].default"
                       class="form-control"
                   />
-
-                  <!-- Render text input for string type -->
-                  <input
-                      v-else-if="value.type === 'string'"
-                      type="text"
-                      :placeholder="value.description"
-                      v-model="store.variables[sectionKey][key].default"
-                      class="form-control"
-                  />
-
-                  <!-- Render text area for gradient type -->
-                  <textarea
-                      v-else-if="value.type === 'gradient'"
-                      :placeholder="value.description"
-                      v-model="store.variables[sectionKey][key].default"
-                      class="form-control"
-                  ></textarea>
-
-                  <!-- Add more conditions if there are other specific types -->
                 </div>
               </div>
             </div>
@@ -141,8 +117,8 @@ import SizeInput from "../Input/SizeInput.vue";
 import SwitchInput from "../Input/SwitchInput.vue";
 import AppLayout from '../AppLayout.vue';
 import axios from "axios";
-import { store } from '../../Store/store';
-import { watch, ref, onMounted, computed } from 'vue';
+import {store} from '../../Store/store';
+import {watch, ref, onMounted, computed} from 'vue';
 import AutocompleteInput from "../Input/AutocompleteInput.vue";
 
 export default {
@@ -173,7 +149,7 @@ export default {
       store.setRandomColorVariables();
     };
 
-    const handleLockUpdate = ({ id, locked }) => {
+    const handleLockUpdate = ({id, locked}) => {
       store.updateLock(id, locked);
     };
 
@@ -183,14 +159,14 @@ export default {
     watch(
         () => store.variables,
         compile,
-        { deep: true }
+        {deep: true}
     );
 
     watch(sourcesOptions, (newOptions) => {
       if (newOptions.length > 0 && !newOptions.includes(selectedSrc.value)) {
         selectedSrc.value = newOptions[0];
       }
-    }, { immediate: true });
+    }, {immediate: true});
 
     watch(selectedSrc, () => {
       compile();
