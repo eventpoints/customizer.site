@@ -28,9 +28,6 @@ final readonly class ClassPropertyService
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            /**
-             * @var InputDto $inputDto
-             */
             $propertyValue = $property->getValue($dto);
 
             if ($propertyValue instanceof InputDto && !empty($propertyValue->getValue())) {
