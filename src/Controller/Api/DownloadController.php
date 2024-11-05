@@ -45,7 +45,7 @@ class DownloadController extends AbstractController
         content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
     #[Route("/bootstrap53/{identifier}")]
-    public function bootstrap53(DownloadTypeEnum $identifier, #[MapRequestPayload] CustomizerFormBootstrap53Dto $bootstrap53Dto): Response
+    public function bootstrap53(DownloadTypeEnum $identifier, #[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto): Response
     {
         return new Response(
             content: $this->findBuilder($identifier)->build($bootstrap53Dto),

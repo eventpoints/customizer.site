@@ -3,7 +3,6 @@
 namespace App\Controller\Api;
 
 use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
-use App\Service\SchemaExtractor;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

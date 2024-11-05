@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\DataTransferObject\Bootstrap53\InputDto;
+use App\DataTransferObject\InputDto;
 use App\DataTransferObject\RootDtoInterface;
 use ReflectionClass;
 

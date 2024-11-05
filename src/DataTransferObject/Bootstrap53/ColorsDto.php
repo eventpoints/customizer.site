@@ -2,7 +2,7 @@
 
 namespace App\DataTransferObject\Bootstrap53;
 
-use App\Attributes\ApiProperty;
+use App\DataTransferObject\InputDto;
 use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -20,8 +20,8 @@ final readonly class ColorsDto
      * @param InputDto $primary
      */
     public function __construct(
-        private InputDto $bodyBg = new InputDto(label: 'Body bg', type: InputTypeEnum::COLOR->value, default: '#ffffff'),
-        private InputDto $primary = new InputDto(label: 'primary color', type: InputTypeEnum::COLOR->value, default: '#0d6efd'),
+        private InputDto $bodyBg = new InputDto(label: 'Body bg', type: InputTypeEnum::COLOR, default: '#ffffff'),
+        private InputDto $primary = new InputDto(label: 'primary color', type: InputTypeEnum::COLOR, default: '#0d6efd'),
     )
     {
     }
