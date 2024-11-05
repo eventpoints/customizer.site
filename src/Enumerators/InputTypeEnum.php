@@ -6,4 +6,9 @@ enum InputTypeEnum: string
 {
     case COLOR = 'color';
     case RADIUS = 'radius';
+    case FLOAT = 'float';
+    case SIZE = 'size';
+    case BOOLEAN = 'boolean';
+    case STRING = 'string';
+    case GRADIENT = 'gradient';
 }

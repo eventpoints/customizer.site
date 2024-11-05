@@ -11,8 +11,8 @@ use OpenApi\Attributes as OA;
 final readonly class Bootstrap53Dto implements RootDtoInterface
 {
     public function __construct(
-        private ColorsDto $colors = new ColorsDto(),
-        private GeneralDto $buttons = new GeneralDto(),
+        private ColorsDto  $colors = new ColorsDto(),
+        private GeneralDto $general = new GeneralDto(),
     )
     {
     }
@@ -22,8 +22,8 @@ final readonly class Bootstrap53Dto implements RootDtoInterface
         return $this->colors;
     }
 
-    public function getButtons(): GeneralDto
+    public function getGeneral(): GeneralDto
     {
-        return $this->buttons;
+        return $this->general;
     }
 }

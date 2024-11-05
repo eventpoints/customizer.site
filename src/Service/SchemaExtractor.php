@@ -9,7 +9,7 @@ use ReflectionProperty;
 class SchemaExtractor
 {
     /**
-     * @return array<string, array<string, int|float|string>>
+     * @return array<string, array<string, int|float|string|bool>>
      */
     public static function render(object $schema): array
     {
@@ -38,9 +38,9 @@ class SchemaExtractor
     }
 
     /**
-     * @return array<string, int|float|string>
+     * @return array<string, int|float|string|bool>
      */
-    private static function processAttribute(OA\Property $attribute, int|float|string $defaultValue): array
+    private static function processAttribute(OA\Property $attribute, int|float|string|bool $defaultValue): array
     {
         return [
             'description' => $attribute->description,
