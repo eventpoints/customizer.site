@@ -16,7 +16,6 @@ final readonly class ScssService
             $scssContent .= sprintf("$%s: %s; \n", $name, self::formatVariable($variable));
 
         }
-        dd($scssContent);
         return $scssContent;
     }
 

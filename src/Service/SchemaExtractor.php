@@ -46,6 +46,7 @@ class SchemaExtractor
             'description' => $attribute->title,
             'type' => $attribute->getInputType()->value,
             'default' => $defaultValue,
+            'value' => $value
         ];
     }
 }

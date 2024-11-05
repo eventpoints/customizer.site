@@ -120,6 +120,7 @@
     <template #main>
 
       {{ store.variables.colors }}
+      {{ store.css }}
       <div class="vh-100" style="position: relative;">
         <div v-if="store.isLoading" class="d-flex min-vh-100 bg-white w-100 justify-content-center align-items-center">
           <div class="spinner-border" role="status">
@@ -152,10 +153,9 @@ export default {
 
     const compile = async () => {
       store.isLoading = true;
-      await axios.post('/api/v1/compile/bootstrap53', store.variables).then((response) => {
-        // store.css = response.data.css;
-
-
+      const variables = generateDefaultJSON(store.variables)
+      await axios.post('/api/v1/compile/bootstrap53', variables).then((response) => {
+        store.css = response.data.css;
         applyCss(store.css);
       }).finally(() => {
         store.isLoading = false;
@@ -198,6 +198,17 @@ export default {
     watch(selectedSrc, () => {
       compile();
     });
+
+    const generateDefaultJSON = (variables) => {
+      const result = {};
+
+      for (const [key, value] of Object.entries(variables)) {
+        // If value has a "default" property, use it; otherwise, include the value as-is
+        result[key] = value.default !== undefined ? value.default : value;
+      }
+
+      return result;
+    }
 
     onMounted(async () => {
       await axios.get('/api/v1/inputs/bootstrap53').then((response) => {

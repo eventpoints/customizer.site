@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
+use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
 use App\Service\BootstrapCompilerService;
 use App\Service\ClassPropertyService;
 use OpenApi\Attributes as OA;
@@ -29,7 +29,7 @@ class CompileController extends AbstractController
         required: true,
         content: new OA\MediaType(
             mediaType: 'application/json',
-            schema: new OA\Schema(ref: '#/components/schemas/Bootstrap53Dto')
+            schema: new OA\Schema(ref: '#/components/schemas/CustomizerFormBootstrap53Dto')
         )
     )]
     #[OA\Response(
@@ -38,11 +38,15 @@ class CompileController extends AbstractController
         content: new OA\MediaType(mediaType: 'application/json')
     )]
     #[Route(path: '/bootstrap53')]
-    public function compileBootstrap53(#[MapRequestPayload] Bootstrap53Dto $bootstrap53Dto): JsonResponse
+    public function compileBootstrap53(#[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto): JsonResponse
     {
+
+        dump($bootstrap53Dto);
         $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
+        dump($variables);
+
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
-        return new JsonResponse(['css' => $css]);
+        return new JsonResponse(data: $css);
     }
 
 }

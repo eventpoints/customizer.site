@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DataTransferObject\Bootstrap53\InputDto;
 use App\DataTransferObject\RootDtoInterface;
 use ReflectionClass;
 
@@ -21,16 +22,19 @@ final readonly class ClassPropertyService
      */
     private static function extractValues(object $dto): array
     {
-
         $reflectionClass = new ReflectionClass($dto);
         $properties = [];
 
         foreach ($reflectionClass->getProperties() as $property) {
-            $type = $property->getType();
-            if (method_exists($type, 'isBuiltin')  && $type->isBuiltin()) {
-                $properties[$property->getName()] = $property->getValue($dto);
-            } else {
-                $properties = array_merge($properties, self::extractValues($property->getValue($dto)));
+            if ($property->getType() instanceof InputDto) {
+
+                /**
+                 * @var InputDto $inputDto
+                 */
+                $inputDto = $property->getValue($dto);
+                $properties[$property->getName()] = $inputDto->getValue();
+            } elseif (is_object($property->getValue(object: $dto))) {
+                $properties = array_merge($properties, self::extractValues(dto: $property->getValue($dto)));
             }
         }
 
