@@ -1,11 +1,19 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="this.id">{{ this.label }}</label>
+    <label class="fw-bold text-muted text-capitalize" :for="id">
+      <span>{{ label }}</span>
+      <!-- Lock icon toggle -->
+      <i
+          :class="locked ? 'bi bi-lock-fill' : 'bi bi-unlock-fill'"
+          @click="toggleLock"
+          style="cursor: pointer; margin-left: 0.5rem;"
+      ></i>
+    </label>
     <div class="d-flex justify-content-between align-items-center">
       <input
           type="text"
-          :id="this.id"
-          :placeholder="this.label"
+          :id="id"
+          :placeholder="label"
           v-model="color"
           class="form-control-plaintext w-75"
       />
@@ -33,6 +41,7 @@ export default {
   data() {
     return {
       color: this.modelValue || '#000000',
+      locked: false, // Track locked state
     };
   },
   watch: {
@@ -43,6 +52,10 @@ export default {
   methods: {
     updateColor() {
       this.$emit('update:modelValue', this.color);
+    },
+    toggleLock() {
+      this.locked = !this.locked;
+      this.$emit('update-lock', { id: this.id, locked: this.locked }); // Emit lock status to parent
     },
   },
 };

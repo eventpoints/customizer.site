@@ -1,13 +1,17 @@
-import {reactive, computed} from 'vue';
+import { reactive } from 'vue';
 
 const state = reactive({
-    variables: {},
+    variables: {
+        colors: {},
+        general: {}
+    },
     css: null,
     isLoading: true,
     sourcesOptions: [
         '/examples/example.bootstrap.5.3.html',
         '/examples/custom.html',
-    ]
+    ],
+    lockedColors: {}, // Track which colors are locked
 });
 
 export const store = {
@@ -42,5 +46,20 @@ export const store = {
     },
     set isLoading(value) {
         state.isLoading = value;
+    },
+
+    // Method to update locked state for specific color keys
+    updateLock(id, locked) {
+        state.lockedColors[id] = locked;
+    },
+
+    setRandomColorVariables() {
+        Object.keys(state.variables.colors).forEach((key) => {
+            if (!state.lockedColors[key]) {
+                state.variables.colors[key] = `#${Math.floor(Math.random() * 16777215)
+                    .toString(16)
+                    .padStart(6, '0')}`;
+            }
+        });
     },
 };

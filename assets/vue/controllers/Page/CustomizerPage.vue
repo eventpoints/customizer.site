@@ -10,7 +10,6 @@
           <div class="h1">Bootstrap 5.3 Customizer</div>
         </div>
 
-        <!-- Dropdown for selecting the iframe source -->
         <div class="list-group-item">
           <label for="srcSelect" class="fw-bold text-muted">Select Example:</label>
           <select v-model="selectedSrc" id="srcSelect" class="form-select mb-3">
@@ -20,25 +19,72 @@
           </select>
         </div>
 
-        <!-- Color and Size Inputs -->
-        <div class="list-group-item" v-for="(color, key) in colorOptions" :key="key">
-          <ColorPickerInput :label="color.label" :id="color.id" v-model="store.variables[color.variable]" />
+        <div class="accordion accordion-flush" id="customizerAccordion">
+          <!-- Loop over each section dynamically -->
+          <div
+              v-for="(section, sectionKey) in store.variables"
+              :key="sectionKey"
+              class="accordion-item"
+          >
+            <div class="d-flex justify-content-between align-items-center p-2" :id="'heading' + sectionKey">
+              <a
+                  class="fs-4 link link-dark text-decoration-none text-capitalize"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#collapse' + sectionKey"
+                  aria-expanded="true"
+                  :aria-controls="'collapse' + sectionKey"
+              >
+                {{ sectionKey.replace(/([A-Z])/g, ' $1') }}
+              </a>
+              <a class=" btn btn-light rounded-circle bi bi-shuffle" @click="randomizeColors"></a>
+            </div>
+            <div
+                :id="'collapse' + sectionKey"
+                class="accordion-collapse collapse show"
+                :aria-labelledby="'heading' + sectionKey"
+                data-bs-parent="#customizerAccordion"
+            >
+              <div class="">
+                <!-- Loop over each variable in the section and render appropriate input -->
+                <div
+                    v-for="(value, key) in section"
+                    :key="key"
+                    class="list-group-item"
+                >
+                  <!-- Render ColorPickerInput if it's a color -->
+                  <ColorPickerInput
+                      v-if="isColor(value)"
+                      :label="key.replace(/([A-Z])/g, ' $1')"
+                      :id="key"
+                      v-model="store.variables[sectionKey][key]"
+                      @update-lock="handleLockUpdate"
+                  />
+
+                  <!-- Render SizeInput if it's a size -->
+                  <SizeInput
+                      v-else-if="isSize(value)"
+                      :label="key.replace(/([A-Z])/g, ' $1')"
+                      :id="key"
+                      v-model="store.variables[sectionKey][key]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <div class="list-group-item">
-          <SizeInput label="Border Radius" id="border-radius" v-model="store.variables.borderRadius" />
-        </div>
-
-        <div class="list-group-item">
-          <a class="btn btn-primary w-100" @click="setRandomColorVariables">Randomise</a>
-        </div>
         <div class="list-group-item">
           <a class="btn btn-primary w-100">AI Builder</a>
         </div>
+
       </div>
     </template>
 
     <template #main>
+
+      {{store.variables}}
+
       <div class="vh-100" style="position: relative;">
         <div v-if="store.isLoading" class="d-flex min-vh-100 bg-white w-100 justify-content-center align-items-center">
           <div class="spinner-border" role="status">
@@ -60,16 +106,19 @@ import ColorPickerInput from '../Input/ColorPickerInput.vue';
 import SizeInput from "../Input/SizeInput.vue";
 import AppLayout from '../AppLayout.vue';
 import axios from "axios";
-import { store } from '../../Store/store';
-import { watch, ref, onMounted, computed } from 'vue';
+import {store} from '../../Store/store';
+import {watch, ref, onMounted, computed} from 'vue';
 
 export default {
   setup() {
     const previewFrame = ref(null);
 
+    // Helper to check if the value is a color (assumes a hex format)
+    const isColor = (value) => /^#[0-9A-Fa-f]{6}$/.test(value);
+    const isSize = (value) => typeof value === 'string' && value.includes('rem');
+
     const compile = async () => {
       store.isLoading = true;
-      axios.defaults.baseURL = 'https://localhost/';
       await axios.post('api/v1/compile/bootstrap53', store.variables).then((response) => {
         store.css = response.data.css;
         applyCss(store.css);
@@ -88,67 +137,48 @@ export default {
       }
     };
 
-    const generateRandomHexColor = () => {
-      return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+    const randomizeColors = () => {
+      store.setRandomColorVariables();
     };
 
-    const setRandomColorVariables = () => {
-      Object.keys(store.variables).forEach((key) => {
-        store.variables[key] = generateRandomHexColor();
-      });
+    const handleLockUpdate = ({id, locked}) => {
+      store.updateLock(id, locked);
     };
 
-    // Computed properties for accessing store sources options and selected source
     const sourcesOptions = computed(() => store.sourcesOptions);
     const selectedSrc = ref(sourcesOptions.value[0] || '');
 
     watch(
         () => store.variables,
         compile,
-        { deep: true }
+        {deep: true}
     );
 
-    // Watch for changes to sourcesOptions and update selectedSrc if necessary
     watch(sourcesOptions, (newOptions) => {
       if (newOptions.length > 0 && !newOptions.includes(selectedSrc.value)) {
         selectedSrc.value = newOptions[0];
       }
-    }, { immediate: true });
+    }, {immediate: true});
 
-    // Watch selectedSrc and compile whenever a new source is selected
     watch(selectedSrc, () => {
       compile();
     });
 
     onMounted(async () => {
-      await axios.get('/api/v1/variables/bootstrap53/colors').then((response) => {
-        store.variables = response.data;
-      }).finally(() => {
-        compile();
+      await axios.get('/api/v1/variables/bootstrap53').then((response) => {
+        store.variables = response.data; // Update colors dynamically
       });
     });
-
-    // Options for ColorPickerInput
-    const colorOptions = [
-      { label: "Background Color", id: "background-color", variable: "bodyBg" },
-      { label: "Primary Color", id: "primary-color", variable: "primary" },
-      { label: "Secondary Color", id: "secondary-color", variable: "secondary" },
-      { label: "Info Color", id: "info-color", variable: "info" },
-      { label: "Success Color", id: "success-color", variable: "success" },
-      { label: "Warning Color", id: "warning-color", variable: "warning" },
-      { label: "Danger Color", id: "danger-color", variable: "danger" },
-      { label: "Dark Color", id: "dark-color", variable: "dark" },
-      { label: "Light Color", id: "light-color", variable: "light" },
-      { label: "List Group Background Color", id: "list-group-bg-color", variable: "listGroupBg" }
-    ];
 
     return {
       store,
       previewFrame,
       sourcesOptions,
       selectedSrc,
-      setRandomColorVariables,
-      colorOptions
+      randomizeColors,
+      handleLockUpdate,
+      isColor,
+      isSize
     };
   },
   components: {
@@ -158,6 +188,7 @@ export default {
   }
 };
 </script>
+
 
 <style lang="css" scoped>
 </style>
