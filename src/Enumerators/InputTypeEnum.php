@@ -5,6 +5,7 @@ namespace App\Enumerators;
 enum InputTypeEnum: string
 {
     case COLOR = 'color';
+    case INTEGER = 'integer';
     case FLOAT = 'float';
     case SIZE = 'size';
     case BOOLEAN = 'boolean';
