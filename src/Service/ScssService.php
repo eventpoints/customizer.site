@@ -10,8 +10,6 @@ final readonly class ScssService
      */
     public static function arrayToScssString(array $variables): string
     {
-        dump($variables);
-
         $scssContent = "";
         foreach ($variables as $key => $variable) {
             $name = strtolower((string)preg_replace('/(?<!^)[A-Z]/', '-$0', $key));
