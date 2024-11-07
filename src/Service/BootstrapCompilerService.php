@@ -6,8 +6,14 @@ namespace App\Service;
 
 namespace App\Service;
 
+use Exception;
 use Minify_CSSmin;
 use ScssPhp\ScssPhp\Compiler;
+use ScssPhp\ScssPhp\Exception\CompilerException;
+use ScssPhp\ScssPhp\Exception\SassException;
+use ScssPhp\ScssPhp\Exception\SassScriptException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Throwable;
 
 class BootstrapCompilerService
 {
@@ -24,7 +30,7 @@ class BootstrapCompilerService
      * @param array<string, string> $variables
      * @return string
      */
-    public function compileCustomBootstrap(array $variables, bool $isMinified = false): string
+    public function compileCustomBootstrap(array $variables, bool $isMinified = false): Throwable|string
     {
         $scssString = ScssService::arrayToScssString(variables: $variables);
 
@@ -39,7 +45,12 @@ class BootstrapCompilerService
         $compiler = new Compiler();
         $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
 
-        $css = $compiler->compileString($scssContent)->getCss();
+        try {
+            $css = $compiler->compileString($scssContent)->getCss();
+        } catch (Throwable $exception) {
+            return $exception;
+        }
+
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
         }

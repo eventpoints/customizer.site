@@ -5,6 +5,7 @@
     </template>
 
     <template #sidebar>
+
       <div class="list-group list-group-flush">
         <div class="list-group-item text-center">
           <div class="fs-4 fw-light">Bootstrap Customizer</div>
@@ -33,10 +34,18 @@
           </div>
         </div>
 
+        <div class="list-group-item">
+          <input
+              v-model="searchQuery"
+              type="text"
+              class="form-control"
+              placeholder="Parameter search..."
+          />
+        </div>
+
         <div class="accordion accordion-flush" id="customizerAccordion">
-          <!-- Loop over each section dynamically -->
           <div
-              v-for="(section, sectionKey) in store.variables"
+              v-for="(section, sectionKey) in filteredSections"
               :key="sectionKey"
               class="accordion-item"
           >
@@ -66,59 +75,22 @@
                 data-bs-parent="#customizerAccordion"
             >
               <div>
-                <!-- Loop over each variable in the section and render appropriate input -->
                 <div
                     v-for="(value, key) in section"
                     :key="key"
                     class="list-group-item"
                 >
-
-                  <!-- Render ColorPickerInput if it's a color -->
+                  <!-- Render inputs based on type -->
                   <ColorPickerInput
                       v-if="value.type === 'color'"
                       v-model="store.variables[sectionKey][key]"
                       :colorMap="store.variables.colors"
-                      @update-lock="handleLockUpdate"
                   />
-
-                  <StringInput
-                      v-if="value.type === 'string'"
-                      :label="value.description"
-                      :id="key"
-                      v-model="store.variables[sectionKey][key]"
-                  />
-
-
-                  <!-- Render SizeInput if it's a size -->
-                  <SizeInput
-                      v-else-if="value.type === 'size'"
-                      :label="value.description"
-                      :id="key"
-                      v-model="store.variables[sectionKey][key]"
-                  />
-
-                  <FloatInput
-                      v-else-if="value.type === 'float'"
-                      :label="value.description"
-                      :id="key"
-                      v-model="store.variables[sectionKey][key]"
-                  />
-
-                  <!-- Render SwitchInput if it's a boolean -->
-                  <SwitchInput
-                      v-else-if="value.type === 'boolean'"
-                      :label="value.description"
-                      :id="key"
-                      v-model="store.variables[sectionKey][key]"
-                  />
-
-                  <IntegerInput
-                      v-else-if="value.type === 'integer'"
-                      :label="value.description"
-                      :id="key"
-                      v-model="store.variables[sectionKey][key]"
-                  />
-
+                  <StringInput v-if="value.type === 'string'" v-model="store.variables[sectionKey][key]"/>
+                  <SizeInput v-else-if="value.type === 'size'" v-model="store.variables[sectionKey][key]"/>
+                  <FloatInput v-else-if="value.type === 'float'" v-model="store.variables[sectionKey][key]"/>
+                  <SwitchInput v-else-if="value.type === 'boolean'" v-model="store.variables[sectionKey][key]"/>
+                  <IntegerInput v-else-if="value.type === 'integer'" v-model="store.variables[sectionKey][key]"/>
                 </div>
               </div>
             </div>
@@ -127,7 +99,7 @@
 
         <div class="list-group-item sticky-bottom">
           <button @click.prevent="compile" class="btn btn-primary w-100">
-            compile changes
+            compile
           </button>
         </div>
 
@@ -135,6 +107,15 @@
     </template>
 
     <template #main>
+      <div v-if="errorMessage"
+           class="alert alert-danger alert-dismissible fade show d-flex justify-content-between align-items-center m-2" role="alert">
+        <div class="hstack gap-2">
+          <span class="bi bi-exclamation-triangle-fill"></span>
+          <div>{{ errorMessage }}</div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+
       <div class="vh-100" style="position: relative;">
         <div v-if="store.isLoading" class="d-flex min-vh-100 bg-white w-100 justify-content-center align-items-center">
           <div class="spinner-border" role="status">
@@ -147,6 +128,7 @@
             style="width: 100%; height: 100%;"
         ></iframe>
       </div>
+
     </template>
   </AppLayout>
 </template>
@@ -158,7 +140,7 @@ import SwitchInput from "../Input/SwitchInput.vue";
 import AppLayout from '../AppLayout.vue';
 import axios from "axios";
 import {store} from '../../Store/store';
-import {watch, ref, onMounted, reactive} from 'vue';
+import {ref, onMounted, computed, reactive} from 'vue';
 import AutocompleteInput from "../Input/AutocompleteInput.vue";
 import StringInput from "../Input/StringInput.vue";
 import FloatInput from "../Input/FloatInput.vue";
@@ -166,8 +148,10 @@ import IntegerInput from "../Input/IntegerInput.vue";
 
 export default {
   setup() {
+    const searchQuery = ref('');
     const previewFrame = ref(null);
     const expandedSections = reactive({});
+    const errorMessage = ref('');
 
     const toggleSection = (sectionKey) => {
       expandedSections[sectionKey] = !expandedSections[sectionKey];
@@ -199,13 +183,21 @@ export default {
 
     const compile = async () => {
       store.isLoading = true;
-      await axios.post('/api/v1/compile/bootstrap53', store.variables).then((response) => {
-        store.css = response.data;
-        applyCss(store.css);
-      }).finally(() => {
-        store.isLoading = false;
-      });
+      errorMessage.value = '';
+
+      await axios.post('/api/v1/compile/bootstrap53', store.variables)
+          .then((response) => {
+            store.css = response.data;
+            applyCss(store.css);
+          })
+          .catch((error) => {
+            errorMessage.value = error.response?.data?.message || 'An error occurred during compilation.';
+          })
+          .finally(() => {
+            store.isLoading = false;
+          });
     };
+
 
     const applyCss = (css) => {
       const iframe = previewFrame.value;
@@ -221,9 +213,32 @@ export default {
       store.setRandomColorVariables();
     };
 
-    const handleLockUpdate = ({id, locked}) => {
-      store.updateLock(id, locked);
+    const filteredSections = computed(() => {
+      if (!searchQuery.value) return store.variables;
+
+      const query = searchQuery.value.toLowerCase();
+      return Object.fromEntries(
+          Object.entries(store.variables).map(([sectionKey, section]) => {
+            // Filter items within each section based on the label
+            const filteredItems = Object.fromEntries(
+                Object.entries(section).filter(([itemKey, item]) =>
+                    item.label && item.label.toLowerCase().includes(query)
+                )
+            );
+
+            // Only return sections that have matching items
+            return [sectionKey, filteredItems];
+          }).filter(([, filteredItems]) => Object.keys(filteredItems).length > 0) // Keep sections with at least one matching item
+      );
+    });
+
+    const matchesSearch = (sectionKey, itemKey, value) => {
+      const query = searchQuery.value.toLowerCase();
+      return (
+          (value?.label && value.label.toLowerCase().includes(query))
+      );
     };
+
 
     onMounted(async () => {
       await axios.get('/api/v1/inputs/bootstrap53').then((response) => {
@@ -235,9 +250,12 @@ export default {
 
     return {
       store,
+      searchQuery,
+      matchesSearch,
+      filteredSections,
       previewFrame,
+      errorMessage,
       randomizeColors,
-      handleLockUpdate,
       expandedSections,
       toggleSection,
       download,
