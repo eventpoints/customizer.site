@@ -7,19 +7,10 @@ namespace App\Service;
 namespace App\Service;
 
 use Minify_CSSmin;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Stopwatch\Stopwatch;
+use ScssPhp\ScssPhp\Compiler;
 
 class BootstrapCompilerService
 {
-    public function __construct(
-        private readonly Stopwatch       $stopwatch,
-        private readonly LoggerInterface $logger,
-        private readonly ScssCompiler    $scssCompiler,
-    )
-    {
-    }
-
     /**
      * @param array<string, string> $variables
      * @return string
@@ -45,10 +36,10 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        $this->stopwatch->start('bootstrap');
-        $css = $this->scssCompiler->compileScss($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/');
+        $compiler = new Compiler();
+        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
 
-        $this->logger->info(sprintf("Css compiled in %s ms", $this->stopwatch->stop('bootstrap')->getDuration()));
+        $css = $compiler->compileString($scssContent)->getCss();
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
         }

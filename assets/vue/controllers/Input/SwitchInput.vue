@@ -10,7 +10,7 @@
         role="switch"
     />
     <!-- Label for the switch -->
-    <label class="form-check-label" :for="id">{{ label }}</label>
+    <label class="form-check-label" :for="id">{{ modelValue.label }}</label>
   </div>
 </template>
 

@@ -1,28 +1,14 @@
 import { reactive } from 'vue';
 
 const state = reactive({
-    variables: {
-        colors: {},
-        general: {}
-    },
+    variables: {},
     css: null,
     isLoading: true,
-    sourcesOptions: [
-        '/examples/example.bootstrap.5.3.html',
-        '/examples/custom.html',
-    ],
-    lockedColors: {}, // Track which colors are locked
+    lockedColors: {},
 });
 
 export const store = {
     state,
-
-    get sourcesOptions() {
-        return state.sourcesOptions;
-    },
-    set sourcesOptions(value) {
-        state.sourcesOptions = value;
-    },
 
     // Getter and Setter for `variables`
     get variables() {
@@ -58,7 +44,7 @@ export const store = {
         Object.keys(state.variables.colors).forEach((key) => {
             const colorItem = state.variables.colors[key];
             if (!state.lockedColors[key] && colorItem.type === 'color') {
-                colorItem.default = `#${Math.floor(Math.random() * 16777215)
+                colorItem.value = `#${Math.floor(Math.random() * 16777215)
                     .toString(16)
                     .padStart(6, '0')}`;
             }
@@ -69,7 +55,7 @@ export const store = {
         if (state.variables[sectionKey]) {
             Object.keys(state.variables[sectionKey]).forEach((key) => {
                 const item = state.variables[sectionKey][key];
-                item.default = item.default;
+                item.value = item.default;
             });
         }
     },
