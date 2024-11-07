@@ -1,9 +1,10 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="id">{{ label }}</label>
+    <label class="fw-bold text-muted text-capitalize" :for="modelValue.title">{{ modelValue.label }}</label>
     <div class="input-group w-100">
       <!-- Input for the size value with unit -->
       <input
+          :id="modelValue.title"
           type="text"
           class="form-control"
           v-model="modelValue.default"
@@ -38,8 +39,6 @@
 export default {
   name: "SizeInput",
   props: {
-    id: String,
-    label: String,
     modelValue: {
       type: Object,
       required: true,

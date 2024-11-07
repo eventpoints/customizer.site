@@ -2,398 +2,248 @@
 
 namespace App\DataTransferObject\Bootstrap53;
 
-use App\Attributes\ApiProperty;
+use App\DataTransferObject\InputDto;
 use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[OA\Schema(
     title: "Bootstrap 5.3 - General",
     type: "object",
 )]
+#[Groups(['form', 'compile'])]
 final readonly class GeneralDto
 {
 
     public function __construct(
-        #[ApiProperty(
-            title: 'Border radius',
-            inputType: InputTypeEnum::SIZE
-        )]
-        private null|string $borderRadius = "0.375rem",
-        #[ApiProperty(
-            title: 'Min contrast ratio',
-            inputType: InputTypeEnum::FLOAT,
-        )]
-        private null|float  $minContrastRatio = 4.5,
-        #[ApiProperty(
-            title: 'Enable caret',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableCaret = true,
-        #[ApiProperty(
-            title: 'Enable rounded',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableRounded = true,
-        #[ApiProperty(
-            title: 'Enable shadows',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableShadows = false,
-        #[ApiProperty(
-            title: 'Enable gradients',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableGradients = false,
-        #[ApiProperty(
-            title: 'Enable transitions',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableTransitions = true,
-        #[ApiProperty(
-            title: 'Enable reduced motion',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableReducedMotion = true,
-        #[ApiProperty(
-            title: 'Enable smooth scroll',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableSmoothScroll = true,
-        #[ApiProperty(
-            title: 'Enable grid classes',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableGridClasses = true,
-        #[ApiProperty(
-            title: 'Enable container classes',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableContainerClasses = true,
-        #[ApiProperty(
-            title: 'Enable cssgrid',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableCssgrid = false,
-        #[ApiProperty(
-            title: 'Enable button pointers',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableButtonPointers = true,
-        #[ApiProperty(
-            title: 'Enable rfs',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableRfs = true,
-        #[ApiProperty(
-            title: 'Enable validation icons',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableValidationIcons = true,
-        #[ApiProperty(
-            title: 'Enable negative margins',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableNegativeMargins = false,
-        #[ApiProperty(
-            title: 'Enable deprecation messages',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableDeprecationMessages = true,
-        #[ApiProperty(
-            title: 'Enable important utilities',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableImportantUtilities = true,
-        #[ApiProperty(
-            title: 'Enable dark mode',
-            inputType: InputTypeEnum::BOOLEAN,
-        )]
-        private null|bool   $enableDarkMode = true,
-        #[ApiProperty(
-            title: 'Color mode type',
-            inputType: InputTypeEnum::STRING,
-        )]
-        private null|string $colorModeType = 'data',
-        #[ApiProperty(
-            title: 'Variable prefix',
-            inputType: InputTypeEnum::STRING,
-        )]
-        private null|string $variablePrefix = 'bs-',
-        #[ApiProperty(
-            title: 'Prefix',
-            inputType: InputTypeEnum::STRING,
-        )]
-        private null|string $prefix = '$variable-prefix',
-        #[ApiProperty(
-            title: 'Gradient',
-            inputType: InputTypeEnum::GRADIENT,
-        )]
-        private null|string $gradient = 'linear-gradient(180deg, rgba($white, .15), rgba($white, 0))',
-        #[ApiProperty(
-            title: 'Spacer',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $spacer = '1rem',
-        #[ApiProperty(
-            title: 'Body text align',
-            inputType: InputTypeEnum::STRING,
-        )]
-        private null|string $bodyTextAlign = 'null',
-        #[ApiProperty(
-            title: 'Paragraph margin bottom',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $paragraphMarginBottom = '1rem',
-        #[ApiProperty(
-            title: 'Container padding x',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $containerPaddingX = '$grid-gutter-width',
-        #[ApiProperty(
-            title: 'Text muted',
-            inputType: InputTypeEnum::COLOR,
-        )]
-        private null|string $textMuted = 'var(--#{$prefix}secondary-color)',
-        #[ApiProperty(
-            title: 'Vr border width',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $vrBorderWidth = 'var(--#{$prefix}border-width)',
-        #[ApiProperty(
-            title: 'Code font size',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $codeFontSize = '$small-font-size',
-        #[ApiProperty(
-            title: 'Code color',
-            inputType: InputTypeEnum::COLOR,
-        )]
-        private null|string $codeColor = '$pink',
-        #[ApiProperty(
-            title: 'Kbd padding y',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $kbdPaddingY = '.1875rem',
-        #[ApiProperty(
-            title: 'Kbd padding x',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $kbdPaddingX = '.375rem',
-        #[ApiProperty(
-            title: 'Kbd font size',
-            inputType: InputTypeEnum::SIZE,
-        )]
-        private null|string $kbdFontSize = '$code-font-size',
-        #[ApiProperty(
-            title: 'Kbd color',
-            inputType: InputTypeEnum::COLOR,
-        )]
-        private null|string $kbdColor = 'var(--#{$prefix}body-bg)',
-        #[ApiProperty(
-            title: 'Kbd bg',
-            inputType: InputTypeEnum::COLOR,
-        )]
-        private null|string $kbdBg = 'var(--#{$prefix}body-color)',
-        #[ApiProperty(
-            title: 'Nested kbd font weight',
-            inputType: InputTypeEnum::STRING,
-        )]
-        private null|string $nestedKbdFontWeight = 'null',
-        #[ApiProperty(
-            title: 'Pre color',
-            inputType: InputTypeEnum::COLOR,
-        )]
-        private null|string $preColor = 'null',
+        private InputDto $borderRadius = new InputDto(label: 'Border radius', default: "0.375rem", type: InputTypeEnum::SIZE),
+        private InputDto $minContrastRatio = new InputDto(label: 'Min contrast ratio', default: 4.5, type: InputTypeEnum::FLOAT),
+        private InputDto $enableCaret = new InputDto(label: 'Enable caret', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableRounded = new InputDto(label: 'Enable rounded', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableShadows = new InputDto(label: 'Enable shadows', default: false, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableGradients = new InputDto(label: 'Enable gradients', default: false, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableTransitions = new InputDto(label: 'Enable transitions', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableReducedMotion = new InputDto(label: 'Enable reduced motion', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableSmoothScroll = new InputDto(label: 'Enable smooth scroll', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableGridClasses = new InputDto(label: 'Enable grid classes', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableContainerClasses = new InputDto(label: 'Enable container classes', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableCssgrid = new InputDto(label: 'Enable cssgrid', default: false, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableButtonPointers = new InputDto(label: 'Enable button pointers', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableRfs = new InputDto(label: 'Enable rfs', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableValidationIcons = new InputDto(label: 'Enable validation icons', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableNegativeMargins = new InputDto(label: 'Enable negative margins', default: false, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableDeprecationMessages = new InputDto(label: 'Enable deprecation messages', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableImportantUtilities = new InputDto(label: 'Enable important utilities', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $enableDarkMode = new InputDto(label: 'Enable dark mode', default: true, type: InputTypeEnum::BOOLEAN),
+        private InputDto $colorModeType = new InputDto(label: 'Color mode type', default: 'data', type: InputTypeEnum::STRING),
+        private InputDto $variablePrefix = new InputDto(label: 'Variable prefix', default: 'bs-', type: InputTypeEnum::STRING),
+        private InputDto $prefix = new InputDto(label: 'Prefix', default: '$variable-prefix', type: InputTypeEnum::STRING),
+        private InputDto $gradient = new InputDto(label: 'Gradient', default: 'linear-gradient(180deg, rgba($white, .15), rgba($white, 0))', type: InputTypeEnum::GRADIENT),
+        private InputDto $spacer = new InputDto(label: 'Spacer', default: '1rem', type: InputTypeEnum::SIZE),
+        private InputDto $bodyTextAlign = new InputDto(label: 'Body text align', default: 'null', type: InputTypeEnum::STRING),
+        private InputDto $paragraphMarginBottom = new InputDto(label: 'Paragraph margin bottom', default: '1rem', type: InputTypeEnum::SIZE),
+        private InputDto $containerPaddingX = new InputDto(label: 'Container padding x', default: '$grid-gutter-width', type: InputTypeEnum::SIZE),
+        private InputDto $textMuted = new InputDto(label: 'Text muted', default: 'var(--#{$prefix}secondary-color)', type: InputTypeEnum::COLOR),
+        private InputDto $vrBorderWidth = new InputDto(label: 'Vr border width', default: 'var(--#{$prefix}border-width)', type: InputTypeEnum::SIZE),
+        private InputDto $codeFontSize = new InputDto(label: 'Code font size', default: '$small-font-size', type: InputTypeEnum::SIZE),
+        private InputDto $codeColor = new InputDto(label: 'Code color', default: '$pink', type: InputTypeEnum::COLOR),
+        private InputDto $kbdPaddingY = new InputDto(label: 'Kbd padding y', default: '.1875rem', type: InputTypeEnum::SIZE),
+        private InputDto $kbdPaddingX = new InputDto(label: 'Kbd padding x', default: '.375rem', type: InputTypeEnum::SIZE),
+        private InputDto $kbdFontSize = new InputDto(label: 'Kbd font size', default: '$code-font-size', type: InputTypeEnum::SIZE),
+        private InputDto $kbdColor = new InputDto(label: 'Kbd color', default: 'var(--#{$prefix}body-bg)', type: InputTypeEnum::COLOR),
+        private InputDto $kbdBg = new InputDto(label: 'Kbd bg', default: 'var(--#{$prefix}body-color)', type: InputTypeEnum::COLOR),
+        private InputDto $nestedKbdFontWeight = new InputDto(label: 'Nested kbd font weight', default: 'null', type: InputTypeEnum::STRING),
+        private InputDto $preColor = new InputDto(label: 'Pre color', default: 'null', type: InputTypeEnum::COLOR),
     )
     {
     }
 
-    public function getBorderRadius(): ?string
+    public function getBorderRadius(): InputDto
     {
         return $this->borderRadius;
     }
 
-    public function getMinContrastRatio(): ?float
+    public function getMinContrastRatio(): InputDto
     {
         return $this->minContrastRatio;
     }
 
-    public function getEnableCaret(): ?bool
+    public function getEnableCaret(): InputDto
     {
         return $this->enableCaret;
     }
 
-    public function getEnableRounded(): ?bool
+    public function getEnableRounded(): InputDto
     {
         return $this->enableRounded;
     }
 
-    public function getEnableShadows(): ?bool
+    public function getEnableShadows(): InputDto
     {
         return $this->enableShadows;
     }
 
-    public function getEnableGradients(): ?bool
+    public function getEnableGradients(): InputDto
     {
         return $this->enableGradients;
     }
 
-    public function getEnableTransitions(): ?bool
+    public function getEnableTransitions(): InputDto
     {
         return $this->enableTransitions;
     }
 
-    public function getEnableReducedMotion(): ?bool
+    public function getEnableReducedMotion(): InputDto
     {
         return $this->enableReducedMotion;
     }
 
-    public function getEnableSmoothScroll(): ?bool
+    public function getEnableSmoothScroll(): InputDto
     {
         return $this->enableSmoothScroll;
     }
 
-    public function getEnableGridClasses(): ?bool
+    public function getEnableGridClasses(): InputDto
     {
         return $this->enableGridClasses;
     }
 
-    public function getEnableContainerClasses(): ?bool
+    public function getEnableContainerClasses(): InputDto
     {
         return $this->enableContainerClasses;
     }
 
-    public function getEnableCssgrid(): ?bool
+    public function getEnableCssgrid(): InputDto
     {
         return $this->enableCssgrid;
     }
 
-    public function getEnableButtonPointers(): ?bool
+    public function getEnableButtonPointers(): InputDto
     {
         return $this->enableButtonPointers;
     }
 
-    public function getEnableRfs(): ?bool
+    public function getEnableRfs(): InputDto
     {
         return $this->enableRfs;
     }
 
-    public function getEnableValidationIcons(): ?bool
+    public function getEnableValidationIcons(): InputDto
     {
         return $this->enableValidationIcons;
     }
 
-    public function getEnableNegativeMargins(): ?bool
+    public function getEnableNegativeMargins(): InputDto
     {
         return $this->enableNegativeMargins;
     }
 
-    public function getEnableDeprecationMessages(): ?bool
+    public function getEnableDeprecationMessages(): InputDto
     {
         return $this->enableDeprecationMessages;
     }
 
-    public function getEnableImportantUtilities(): ?bool
+    public function getEnableImportantUtilities(): InputDto
     {
         return $this->enableImportantUtilities;
     }
 
-    public function getEnableDarkMode(): ?bool
+    public function getEnableDarkMode(): InputDto
     {
         return $this->enableDarkMode;
     }
 
-    public function getColorModeType(): ?string
+    public function getColorModeType(): InputDto
     {
         return $this->colorModeType;
     }
 
-    public function getVariablePrefix(): ?string
+    public function getVariablePrefix(): InputDto
     {
         return $this->variablePrefix;
     }
 
-    public function getPrefix(): ?string
+    public function getPrefix(): InputDto
     {
         return $this->prefix;
     }
 
-    public function getGradient(): ?string
+    public function getGradient(): InputDto
     {
         return $this->gradient;
     }
 
-    public function getSpacer(): ?string
+    public function getSpacer(): InputDto
     {
         return $this->spacer;
     }
 
-    public function getBodyTextAlign(): ?string
+    public function getBodyTextAlign(): InputDto
     {
         return $this->bodyTextAlign;
     }
 
-    public function getParagraphMarginBottom(): ?string
+    public function getParagraphMarginBottom(): InputDto
     {
         return $this->paragraphMarginBottom;
     }
 
-    public function getContainerPaddingX(): ?string
+    public function getContainerPaddingX(): InputDto
     {
         return $this->containerPaddingX;
     }
 
-    public function getTextMuted(): ?string
+    public function getTextMuted(): InputDto
     {
         return $this->textMuted;
     }
 
-    public function getVrBorderWidth(): ?string
+    public function getVrBorderWidth(): InputDto
     {
         return $this->vrBorderWidth;
     }
 
-    public function getCodeFontSize(): ?string
+    public function getCodeFontSize(): InputDto
     {
         return $this->codeFontSize;
     }
 
-    public function getCodeColor(): ?string
+    public function getCodeColor(): InputDto
     {
         return $this->codeColor;
     }
 
-    public function getKbdPaddingY(): ?string
+    public function getKbdPaddingY(): InputDto
     {
         return $this->kbdPaddingY;
     }
 
-    public function getKbdPaddingX(): ?string
+    public function getKbdPaddingX(): InputDto
     {
         return $this->kbdPaddingX;
     }
 
-    public function getKbdFontSize(): ?string
+    public function getKbdFontSize(): InputDto
     {
         return $this->kbdFontSize;
     }
 
-    public function getKbdColor(): ?string
+    public function getKbdColor(): InputDto
     {
         return $this->kbdColor;
     }
 
-    public function getKbdBg(): ?string
+    public function getKbdBg(): InputDto
     {
         return $this->kbdBg;
     }
 
-    public function getNestedKbdFontWeight(): ?string
+    public function getNestedKbdFontWeight(): InputDto
     {
         return $this->nestedKbdFontWeight;
     }
 
-    public function getPreColor(): ?string
+    public function getPreColor(): InputDto
     {
         return $this->preColor;
     }

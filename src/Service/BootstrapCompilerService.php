@@ -6,7 +6,7 @@ namespace App\Service;
 
 namespace App\Service;
 
-use CssMin;
+use Minify_CSSmin;
 use ScssPhp\ScssPhp\Compiler;
 
 class BootstrapCompilerService
@@ -30,8 +30,8 @@ class BootstrapCompilerService
 
         $scssContent = <<<SCSS
     @import "functions";
-    @import "variables";
     $scssString
+    @import "variables";
     @import "mixins";
     @import "bootstrap";
     SCSS;
@@ -41,7 +41,7 @@ class BootstrapCompilerService
 
         $css = $compiler->compileString($scssContent)->getCss();
         if ($isMinified) {
-            return CssMin::minify($css);
+            return Minify_CSSmin::minify($css);
         }
 
         return $css;

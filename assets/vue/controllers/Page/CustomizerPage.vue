@@ -186,18 +186,29 @@ export default {
     watch(
         () => store.variables,
         compile,
-        { deep: true }
+        {deep: true}
     );
 
     watch(sourcesOptions, (newOptions) => {
       if (newOptions.length > 0 && !newOptions.includes(selectedSrc.value)) {
         selectedSrc.value = newOptions[0];
       }
-    }, { immediate: true });
+    }, {immediate: true});
 
     watch(selectedSrc, () => {
       compile();
     });
+
+    const generateDefaultJSON = (variables) => {
+      const result = {};
+
+      for (const [key, value] of Object.entries(variables)) {
+        // If value has a "default" property, use it; otherwise, include the value as-is
+        result[key] = value.default !== undefined ? value.default : value;
+      }
+
+      return result;
+    }
 
     onMounted(async () => {
       await axios.get('/api/v1/inputs/bootstrap53').then((response) => {

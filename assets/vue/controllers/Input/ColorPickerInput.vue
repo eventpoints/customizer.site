@@ -53,8 +53,6 @@
 export default {
   name: 'ColorPickerInput',
   props: {
-    id: String,
-    label: String,
     modelValue: {
       type: Object,
       required: true,

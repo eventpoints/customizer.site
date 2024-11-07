@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\Bootstrap53\Bootstrap53Dto;
+use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
 use App\Enumerators\DownloadTypeEnum;
 use App\Service\FileBuilderService\FileBuilderInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,7 +37,7 @@ class DownloadController extends AbstractController
     #[OA\RequestBody(
         description: 'JSON body containing variables required for the operation.',
         required: true,
-        content: new OA\JsonContent(ref: '#/components/schemas/Bootstrap53Dto')
+        content: new OA\JsonContent(ref: '#/components/schemas/CustomizerFormBootstrap53Dto')
     )]
     #[OA\Response(
         response: 200,
@@ -45,7 +45,7 @@ class DownloadController extends AbstractController
         content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
     #[Route("/bootstrap53/{identifier}")]
-    public function bootstrap53(DownloadTypeEnum $identifier, #[MapRequestPayload] Bootstrap53Dto $bootstrap53Dto): Response
+    public function bootstrap53(DownloadTypeEnum $identifier, #[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto): Response
     {
         return new Response(
             content: $this->findBuilder($identifier)->build($bootstrap53Dto),
