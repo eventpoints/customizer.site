@@ -184,7 +184,11 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${identifier}.css`);
+        if (identifier === 'variables') {
+          link.setAttribute('download', `${identifier}.scss`);
+        } else {
+          link.setAttribute('download', `${identifier}.css`);
+        }
         document.body.appendChild(link);
         link.click();
         link.remove();
@@ -224,7 +228,7 @@ export default {
     onMounted(async () => {
       await axios.get('/api/v1/inputs/bootstrap53').then((response) => {
         store.variables = response.data;
-      }).finally(()=>{
+      }).finally(() => {
         compile()
       });
     });
