@@ -33,9 +33,13 @@ final readonly class InputDto
         #[Groups(['form', 'compile', 'ai-generator'])]
         private null|string|bool|float|int $value = null,
         #[Groups(['form'])]
-        private bool $isLocked = false,
-        #[Groups(['ai-generator'])]
+        private null|string|bool|float|int $default = null,
+        #[Groups(['form', 'compile'])]
+        private null|string|bool|float|int $value = null,
+        #[Groups(['form'])]
+        private bool $isLocked = false
         private bool $isAiGenerable = false
+        #[Groups(['ai-generator'])]
     )
     {
         $this->id = Uuid::v4();
@@ -65,15 +69,16 @@ final readonly class InputDto
     {
         return $this->value;
     }
-
-    public function isLocked(): bool
-    {
-        return $this->isLocked;
-    }
-
     public function isAiGenerable(): bool
     {
         return $this->isAiGenerable;
     }
+    public function isLocked(): bool
+
+
+
+    {
+    }
+        return $this->isLocked;
 
 }

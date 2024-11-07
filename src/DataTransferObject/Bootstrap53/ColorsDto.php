@@ -59,11 +59,6 @@ final readonly class ColorsDto
         private InputDto $black = new InputDto(label: 'Black', type: InputTypeEnum::COLOR, default: '#000000', isAiGenerable: false),
     ) {}
 
-    public function getBodyBg(): InputDto
-    {
-        return $this->bodyBg;
-    }
-
     public function getPrimary(): InputDto
     {
         return $this->primary;
