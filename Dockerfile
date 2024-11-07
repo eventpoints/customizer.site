@@ -35,6 +35,7 @@ FROM composer as php
 COPY --from=js-builder /build .
 COPY . .
 
+RUN npm install -g sass
 # Need to run again to trigger scripts with application code present
 RUN composer install --no-dev --no-interaction --classmap-authoritative
 RUN composer symfony:dump-env prod
