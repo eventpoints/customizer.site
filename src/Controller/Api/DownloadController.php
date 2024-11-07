@@ -51,7 +51,7 @@ class DownloadController extends AbstractController
             content: $this->findBuilder($identifier)->build($bootstrap53Dto),
             headers: [
                 'Content-Type' => $identifier->getType()->getMimeType(),
-                'Content-Disposition' => 'attachment; filename="' . $identifier->getType()->getFileName() . '"'
+                'Content-Disposition' => 'attachment; filename="' . rawurlencode($identifier->getType()->getFileName()) . '"',
             ]
         );
     }
@@ -59,7 +59,7 @@ class DownloadController extends AbstractController
     private function findBuilder(DownloadTypeEnum $identifier): ?FileBuilderInterface
     {
         return (new ArrayCollection(iterator_to_array($this->fileBuilders)))->findFirst(
-            fn(int $key, FileBuilderInterface $fileBuilder):bool => $fileBuilder instanceof ($identifier->getType()->getBuilderFqn())
+            fn(int $key, FileBuilderInterface $fileBuilder): bool => $fileBuilder instanceof ($identifier->getType()->getBuilderFqn())
         );
     }
 }
