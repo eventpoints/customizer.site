@@ -97,15 +97,6 @@ export default {
         this.inputValue = newValue.value || newValue.default || "#000000";
       },
     },
-    // Watch colorMap to react to any changes in referenced colors
-    colorMap: {
-      deep: true,
-      handler() {
-        if (this.isColorVariable(this.modelValue.default)) {
-          this.$emit('update:modelValue', this.modelValue); // Trigger reactivity on referenced color change
-        }
-      },
-    },
   },
   methods: {
     onInput() {

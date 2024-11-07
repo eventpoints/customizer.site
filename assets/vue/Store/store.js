@@ -1,10 +1,7 @@
 import {reactive} from 'vue';
 
 const state = reactive({
-    variables: {
-        colors: {},
-        general: {}
-    },
+    variables: {},
     css: null,
     isLoading: true,
 });
