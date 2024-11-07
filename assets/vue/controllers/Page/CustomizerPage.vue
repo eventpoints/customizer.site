@@ -182,13 +182,19 @@ export default {
         );
 
         const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        let filename = '';
+        const contentDisposition = response.headers['content-disposition'];
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+          if (filenameMatch.length > 1) {
+            filename = filenameMatch[1];
+          }
+        }
+
         const link = document.createElement('a');
         link.href = url;
-        if (identifier === 'variables') {
-          link.setAttribute('download', `${identifier}.scss`);
-        } else {
-          link.setAttribute('download', `${identifier}.css`);
-        }
+        link.setAttribute('download', filename);
         document.body.appendChild(link);
         link.click();
         link.remove();
