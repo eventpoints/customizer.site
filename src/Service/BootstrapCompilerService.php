@@ -6,13 +6,8 @@ namespace App\Service;
 
 namespace App\Service;
 
-use Exception;
 use Minify_CSSmin;
 use ScssPhp\ScssPhp\Compiler;
-use ScssPhp\ScssPhp\Exception\CompilerException;
-use ScssPhp\ScssPhp\Exception\SassException;
-use ScssPhp\ScssPhp\Exception\SassScriptException;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Throwable;
 
 class BootstrapCompilerService
