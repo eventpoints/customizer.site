@@ -4,22 +4,11 @@ const state = reactive({
     variables: {},
     css: null,
     isLoading: true,
-    sourcesOptions: [
-        '/examples/example.bootstrap.5.3.html',
-        '/examples/custom.html',
-    ],
-    lockedColors: {}, // Track which colors are locked
+    lockedColors: {},
 });
 
 export const store = {
     state,
-
-    get sourcesOptions() {
-        return state.sourcesOptions;
-    },
-    set sourcesOptions(value) {
-        state.sourcesOptions = value;
-    },
 
     // Getter and Setter for `variables`
     get variables() {
@@ -66,7 +55,7 @@ export const store = {
         if (state.variables[sectionKey]) {
             Object.keys(state.variables[sectionKey]).forEach((key) => {
                 const item = state.variables[sectionKey][key];
-                item.default = item.default;
+                item.value = item.default;
             });
         }
     },

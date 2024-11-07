@@ -1,6 +1,6 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="id">
+    <label class="fw-bold text-muted text-capitalize" :for="modelValue.label">
       <span>{{ modelValue.label }}</span>
       <!-- Lock icon toggle -->
       <i
@@ -13,8 +13,8 @@
       <!-- Text input for color hex value or SCSS variable -->
       <input
           type="text"
-          :id="id"
-          :placeholder="label"
+          :id="modelValue.label"
+          :placeholder="modelValue.label"
           v-model="inputValue"
           @input="onInput"
           @focus="showSuggestions = true"

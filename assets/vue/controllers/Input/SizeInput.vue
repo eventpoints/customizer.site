@@ -1,14 +1,15 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="modelValue.title">{{ modelValue.label }}</label>
+    <label class="fw-bold text-muted text-capitalize" :for="modelValue.label">{{ modelValue.label }}</label>
+    {{this.modelValue.value}}
     <div class="input-group w-100">
-      <!-- Input for the size value with unit -->
+      <!-- Input for the size value -->
+
       <input
-          :id="modelValue.title"
-          type="text"
+          type="number"
           class="form-control"
-          v-model="computedSize"
-          @input="emitUpdatedValue"
+          v-model="size"
+          @input="updateSize"
           aria-label="Size value input"
           placeholder="Size"
       />
@@ -18,17 +19,17 @@
           data-bs-toggle="dropdown"
           aria-expanded="false"
       >
-        {{ extractUnit(computedSize) }}
+        {{ unit }}
       </button>
 
       <!-- Dropdown menu for selecting a unit -->
       <ul class="dropdown-menu dropdown-menu-end">
         <li
-            v-for="unit in units"
-            :key="unit"
-            @click="selectUnit(unit)"
+            v-for="unitOption in units"
+            :key="unitOption"
+            @click="selectUnit(unitOption)"
         >
-          <a class="dropdown-item" href="#">{{ unit }}</a>
+          <a class="dropdown-item">{{ unitOption }}</a>
         </li>
       </ul>
     </div>
@@ -47,34 +48,32 @@ export default {
   data() {
     return {
       units: ["px", "%", "em", "rem", "vw", "vh"], // List of CSS units
+      size: null, // Numeric part of the size
+      unit: "px", // Default unit if none specified
     };
   },
-  computed: {
-    // Computed property for size with unit, falling back to default if value is null
-    computedSize: {
-      get() {
-        return this.modelValue.value || this.modelValue.default || "0px";
-      },
-      set(newValue) {
-        this.$set(this.modelValue, "value", newValue);
-      },
-    },
+  mounted() {
+    // Initialize size and unit based on modelValue's default or value
+    const initialSize = this.modelValue.value || this.modelValue.default || "0px";
+    const match = initialSize.match(/^([\d.]+)([a-zA-Z%]+)$/);
+    if (match) {
+      this.size = parseFloat(match[1]);
+      this.unit = match[2];
+    } else {
+      this.size = parseFloat(initialSize) || 0;
+      this.unit = "px"; // Default to px if no unit is found
+    }
   },
   methods: {
-    emitUpdatedValue() {
-      // Emit the updated modelValue object to the parent
+    updateSize() {
+      // Update the model value with the current size and unit
+      this.modelValue.value = `${this.size}${this.unit}`;
       this.$emit("update:modelValue", this.modelValue);
     },
-    selectUnit(unit) {
-      // Extract the numeric part of the computed size and combine it with the selected unit
-      const valueWithoutUnit = parseFloat(this.computedSize);
-      this.computedSize = `${valueWithoutUnit}${unit}`;
-      this.emitUpdatedValue();
-    },
-    extractUnit(value) {
-      // Extract the unit from the given value
-      const match = value.match(/[a-zA-Z%]+$/);
-      return match ? match[0] : "px";
+    selectUnit(selectedUnit) {
+      // Update the unit and emit the new combined value
+      this.unit = selectedUnit;
+      this.updateSize();
     },
   },
 };
