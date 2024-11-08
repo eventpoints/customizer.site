@@ -7,19 +7,11 @@ namespace App\Service;
 namespace App\Service;
 
 use Minify_CSSmin;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Stopwatch\Stopwatch;
+use ScssPhp\ScssPhp\Compiler;
+use Throwable;
 
 class BootstrapCompilerService
 {
-    public function __construct(
-        private readonly Stopwatch       $stopwatch,
-        private readonly LoggerInterface $logger,
-        private readonly ScssCompiler    $scssCompiler,
-    )
-    {
-    }
-
     /**
      * @param array<string, string> $variables
      * @return string
@@ -33,7 +25,7 @@ class BootstrapCompilerService
      * @param array<string, string> $variables
      * @return string
      */
-    public function compileCustomBootstrap(array $variables, bool $isMinified = false): string
+    public function compileCustomBootstrap(array $variables, bool $isMinified = false): Throwable|string
     {
         $scssString = ScssService::arrayToScssString(variables: $variables);
 
@@ -45,10 +37,15 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        $this->stopwatch->start('bootstrap');
-        $css = $this->scssCompiler->compileScss($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/');
+        $compiler = new Compiler();
+        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
 
-        $this->logger->info(sprintf("Css compiled in %s ms", $this->stopwatch->stop('bootstrap')->getDuration()));
+        try {
+            $css = $compiler->compileString($scssContent)->getCss();
+        } catch (Throwable $exception) {
+            return $exception;
+        }
+
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
         }

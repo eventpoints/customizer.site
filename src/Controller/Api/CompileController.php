@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Throwable;
 
 #[OA\Tag(name: 'Compile')]
 #[Route(path: '/compile', methods: ['POST'])]
@@ -42,6 +43,13 @@ class CompileController extends AbstractController
     {
         $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
+
+        if ($css instanceof Throwable) {
+            return new JsonResponse(data: [
+                'message' => $css->getMessage(),
+            ], status: 500);
+        }
+
         return new JsonResponse(data: $css);
     }
 
