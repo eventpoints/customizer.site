@@ -14,7 +14,7 @@ final readonly class ClassPropertyService
      */
     public static function getClassProperties(RootDtoInterface $rootDto): array
     {
-        return self::extractValues($rootDto);
+        return self::sortVariables(self::extractValues($rootDto));
     }
 
     /**
@@ -39,4 +39,22 @@ final readonly class ClassPropertyService
 
         return $properties;
     }
+
+    /**
+     * @param array<string, string|null> $variables
+     * @return array<string, string|null>
+     */
+    private static function sortVariables(array $variables): array
+    {
+        uasort($variables, function ($valueA, $keyA) use ($variables): int {
+            if (str_starts_with($valueA, '$')) {
+                $referencedKey = substr($valueA, 1);
+                return array_key_exists($referencedKey, $variables) ? 1 : 0;
+            }
+            return 0;
+        });
+
+        return $variables;
+    }
+
 }
