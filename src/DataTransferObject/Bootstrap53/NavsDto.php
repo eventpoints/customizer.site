@@ -17,8 +17,8 @@ final readonly class NavsDto
     public function __construct(
         private InputDto $navLinkPaddingY = new InputDto(label: 'Nav Link Padding Y', type: InputTypeEnum::SIZE, default: '.5rem'),
         private InputDto $navLinkPaddingX = new InputDto(label: 'Nav Link Padding X', type: InputTypeEnum::SIZE, default: '1rem'),
-        private InputDto $navLinkFontSize = new InputDto(label: 'Nav Link Font Size', type: InputTypeEnum::SIZE, default: null),
-        private InputDto $navLinkFontWeight = new InputDto(label: 'Nav Link Font Weight', type: InputTypeEnum::INTEGER, default: null),
+        private InputDto $navLinkFontSize = new InputDto(label: 'Nav Link Font Size', type: InputTypeEnum::SIZE, default: 'null'),
+        private InputDto $navLinkFontWeight = new InputDto(label: 'Nav Link Font Weight', type: InputTypeEnum::INTEGER, default: 'null'),
         private InputDto $navLinkColor = new InputDto(label: 'Nav Link Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}link-color)'),
         private InputDto $navLinkHoverColor = new InputDto(label: 'Nav Link Hover Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}link-hover-color)'),
         private InputDto $navLinkTransition = new InputDto(label: 'Nav Link Transition', type: InputTypeEnum::STRING, default: 'color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out'),

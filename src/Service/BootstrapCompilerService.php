@@ -12,6 +12,12 @@ use Throwable;
 
 class BootstrapCompilerService
 {
+    public function __construct(
+        private ScssCompiler $scssCompiler,
+    )
+    {
+    }
+
     /**
      * @param array<string, string> $variables
      * @return string
@@ -27,30 +33,30 @@ class BootstrapCompilerService
      */
     public function compileCustomBootstrap(array $variables, bool $isMinified = false): Throwable|string
     {
-        $scssString = ScssService::arrayToScssString(variables: $variables);
+//        $scssString = ScssService::arrayToScssString(variables: $variables);
+//
+//        $scssContent = <<<SCSS
+//    @import "functions";
+//    $scssString
+//    @import "variables";
+//    @import "mixins";
+//    @import "bootstrap";
+//    SCSS;
 
-        $scssContent = <<<SCSS
-    @import "functions";
-    $scssString
-    @import "variables";
-    @import "mixins";
-    @import "bootstrap";
-    SCSS;
-
-        $compiler = new Compiler();
-        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
-
-        try {
-            $css = $compiler->compileString($scssContent)->getCss();
-        } catch (Throwable $exception) {
-            return $exception;
-        }
-
-        if ($isMinified) {
-            return Minify_CSSmin::minify($css);
-        }
-
-        return $css;
+//        $compiler = new Compiler();
+//        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
+        return $this->scssCompiler->compileBootstrap53($variables, __DIR__ . '/../../node_modules/bootstrap/scss/');
+//        try {
+//            $css = $compiler->compileString($scssContent)->getCss();
+//        } catch (Throwable $exception) {
+//            return $exception;
+//        }
+//
+//        if ($isMinified) {
+//            return Minify_CSSmin::minify($css);
+//        }
+//
+//        return $css;
     }
 
 }

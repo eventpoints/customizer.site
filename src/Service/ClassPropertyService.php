@@ -44,10 +44,10 @@ final readonly class ClassPropertyService
      * @param array<string, string|null> $variables
      * @return array<string, string|null>
      */
-    private static function sortVariables(array $variables): array
+    public static function sortVariables(array $variables): array
     {
         uasort($variables, function ($valueA, $keyA) use ($variables): int {
-            if (str_starts_with($valueA, '$')) {
+            if (str_starts_with((string)$valueA, '$')) {
                 $referencedKey = substr($valueA, 1);
                 return array_key_exists($referencedKey, $variables) ? 1 : 0;
             }
