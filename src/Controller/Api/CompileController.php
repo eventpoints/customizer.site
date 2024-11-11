@@ -47,7 +47,7 @@ class CompileController extends AbstractController
         $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
 
         if ($isCached) {
-            return $this->cache->get(sprintf('bompiledBootstrap-%s', crc32(serialize($variables))), fn(): \Symfony\Component\HttpFoundation\JsonResponse => $this->getCss($variables));
+            return $this->cache->get(sprintf('compiledBootstrap-%s', crc32(serialize($variables))), fn(): \Symfony\Component\HttpFoundation\JsonResponse => $this->getCss($variables));
         }
 
         return $this->getCss($variables);
