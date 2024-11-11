@@ -19,7 +19,7 @@ final readonly class ScssService
         return $scssContent;
     }
 
-    private static function formatVariable(mixed $variable): string
+    public static function formatVariable(mixed $variable): string
     {
         return match (gettype($variable)) {
             'boolean' => $variable? 'true' : 'false',

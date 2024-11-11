@@ -19,9 +19,9 @@ class ScssCompiler
     private float $float = 456456;
 
     public function __construct(
-        private Environment $twig,
+        private Environment    $twig,
         private CacheInterface $cache,
-        private Compiler $compiler = new Compiler(),
+        private Compiler       $compiler = new Compiler(),
     )
     {
     }
@@ -31,15 +31,16 @@ class ScssCompiler
         $variables = array_merge($variables, $this->getTwigVars(CustomizerFormBootstrap53Dto::class));
         $this->compiler->setImportPaths($contextPath);
 
-        $cssTemplate = $this->cache->get('bootstrap53Template', fn() => $this->getPrecompiledBootstrap53Css());
-//        dd($cssTemplate);
+//        $cssTemplate = $this->cache->get('bootstrap53Template', $this->getPrecompiledBootstrap53Css());
+        $cssTemplate = $this->getPrecompiledBootstrap53Css();
+        dd($cssTemplate);
         return $this->twig->createTemplate($cssTemplate)->render($variables);
     }
 
 
     private function getPrecompiledBootstrap53Css(): string
     {
-        $variables = ClassPropertyService::sortVariables($this->getTwigVars(CustomizerFormBootstrap53Dto::class, true));
+        $variables = ClassPropertyService::sortVariables($this->getTwigVars(CustomizerFormBootstrap53Dto::class));
         $scssString = ScssService::arrayToScssString(variables: $variables);
 
         $scssContent = <<<SCSS
@@ -49,9 +50,10 @@ class ScssCompiler
     @import "mixins";
     @import "bootstrap";
     SCSS;
-        $css = s($this->compiler->compileString($scssContent)->getCss());
 
-        foreach ($variables as $name=>$value) {
+        $css = s($this->compiler->compileString($scssContent)->getCss());
+        dd($css->toString());
+        foreach ($variables as $name => $value) {
             $css = $css->replace((string)$value, sprintf('{{ %s }}', $name));
         }
 
@@ -68,7 +70,7 @@ class ScssCompiler
             $propertyInstance = $property->getValue($dto);
 
             if ($propertyInstance instanceof InputDto) {
-                if ($randomize){
+                if ($randomize) {
                     $vars[$property->getName()] = match ($propertyInstance->getType()) {
                         InputTypeEnum::COLOR => $this->generateRandomColor(),
                         InputTypeEnum::SIZE => $this->generateRandomSize(),
@@ -76,8 +78,9 @@ class ScssCompiler
                         InputTypeEnum::FLOAT => ($this->float = +0.001),
                         default => uniqid(),
                     };
-                }else{
-                    $vars[$property->getName()] = $propertyInstance->getDefault();
+                } else {
+                    $vars[$property->getName()] = ScssService::formatVariable($propertyInstance->getDefault()) . '/*id-' . uniqid() . '*/';
+//                    $vars[$property->getName()] = $propertyInstance->getDefault();
                 }
             } else {
                 $vars = array_merge($vars, $this->getTwigVars($property->getType()->getName()));
