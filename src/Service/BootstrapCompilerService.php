@@ -7,11 +7,16 @@ namespace App\Service;
 namespace App\Service;
 
 use Minify_CSSmin;
-use ScssPhp\ScssPhp\Compiler;
 use Throwable;
 
 class BootstrapCompilerService
 {
+    public function __construct(
+        private readonly ScssCompiler $compiler
+    )
+    {
+    }
+
     /**
      * @param array<string, string> $variables
      * @return string
@@ -37,11 +42,8 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        $compiler = new Compiler();
-        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
-
         try {
-            $css = $compiler->compileString($scssContent)->getCss();
+            $css = $this->compiler->compileScss($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/');
         } catch (Throwable $exception) {
             return $exception;
         }
