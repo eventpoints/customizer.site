@@ -2,15 +2,21 @@
 
 namespace App\DataTransferObject;
 
-use App\DataTransferObject\Bootstrap53\ColorsDto;
+use Symfony\Component\Uid\Uuid;
 
 class AiResponseDto
 {
     public function __construct(
-        private readonly ?string $response = null,
-        private readonly ?ColorsDto $colors = null,
+        private readonly Uuid              $id,
+        private readonly ?string           $response = null,
+        private readonly ?RootDtoInterface $dto = null,
     )
     {
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
     }
 
     public function getResponse(): ?string
@@ -18,8 +24,8 @@ class AiResponseDto
         return $this->response;
     }
 
-    public function getColors(): ?ColorsDto
+    public function getDto(): ?RootDtoInterface
     {
-        return $this->colors;
+        return $this->dto;
     }
 }
