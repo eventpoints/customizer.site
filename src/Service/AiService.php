@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\DataTransferObject\AiResponseDto;
 use App\Entity\Conversation;
+use App\Entity\Message;
 use Doctrine\ORM\EntityManagerInterface;
 use LLPhant\Chat\Enums\ChatRole;
 use LLPhant\Chat\FunctionInfo\FunctionInfo;
@@ -31,7 +32,7 @@ class AiService
         $chat = new OpenAIChat($config);
 
         $conversation = $this->buildConversation($id);
-        $conversation->addMessage((new \App\Entity\Message(ChatRole::User))->setContent($requestPrompt));
+        $conversation->addMessage((new Message(ChatRole::User))->setContent($requestPrompt));
 
         $tool = $this->getTool();
         $tool->setToolCallId(uniqid());
@@ -39,9 +40,9 @@ class AiService
         $chat->addTool($tool);
 
         $chat->setSystemMessage('You are a bootstrap theme generator. Generate a bootstrap theme calling the "build" tool.');
-        $response = $chat->generateChat($conversation->getMessages()->map(fn(\App\Entity\Message $message): \LLPhant\Chat\Message => $message->getMessage())->toArray());
+        $response = $chat->generateChat($conversation->getMessages()->map(fn(Message $message): \LLPhant\Chat\Message => $message->getMessage())->toArray());
 
-        $conversation->addMessage((new \App\Entity\Message(ChatRole::Assistant))->setContent($response)->setDto($this->bootstrap53Factory->getDto()));
+        $conversation->addMessage((new Message(ChatRole::Assistant))->setContent($response)->setDto($this->bootstrap53Factory->getDto()));
         $this->entityManager->persist($conversation);
         $this->entityManager->flush();
 
