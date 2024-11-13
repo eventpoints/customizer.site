@@ -20,7 +20,7 @@ class CompileController extends AbstractController
 {
     public function __construct(
         private readonly BootstrapCompilerService $bootstrapCompilerService,
-        private readonly CacheInterface $cache,
+        private readonly CacheInterface           $cache,
     )
     {
     }
@@ -56,15 +56,16 @@ class CompileController extends AbstractController
     /**
      * @param array<string, string> $variables
      */
-    private function getCss(array $variables):JsonResponse
+    private function getCss(array $variables): JsonResponse
     {
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
 
-        if ($css instanceof Throwable) {
+        try {
+            return new JsonResponse(data: $css);
+        } catch (Throwable $throwable) {
             return new JsonResponse(data: [
-                'message' => $css->getMessage(),
+                'message' => $throwable->getMessage(),
             ], status: 500);
         }
-        return new JsonResponse(data: $css);
     }
 }

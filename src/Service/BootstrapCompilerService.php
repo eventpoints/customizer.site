@@ -8,13 +8,15 @@ namespace App\Service;
 
 use Minify_CSSmin;
 use Throwable;
+use ScssPhp\ScssPhp\Compiler;
 
 class BootstrapCompilerService
 {
-    public function __construct(
-        private readonly ScssCompiler $compiler
-    )
+    private readonly Compiler $compiler;
+
+    public function __construct()
     {
+        $this->compiler = new Compiler();
     }
 
     /**
@@ -42,11 +44,7 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        try {
-            $css = $this->compiler->compileScss($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/');
-        } catch (Throwable $exception) {
-            return $exception;
-        }
+        $css = $this->compiler->compileString($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/')->getCss();
 
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
