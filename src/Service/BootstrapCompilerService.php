@@ -44,7 +44,8 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        $css = $this->compiler->compileString($scssContent, __DIR__ . '/../../node_modules/bootstrap/scss/')->getCss();
+        $this->compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
+        $css = $this->compiler->compileString($scssContent)->getCss();
 
         if ($isMinified) {
             return Minify_CSSmin::minify($css);

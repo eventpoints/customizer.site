@@ -12,7 +12,6 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
-use Throwable;
 
 #[OA\Tag(name: 'Compile')]
 #[Route(path: '/compile', methods: ['POST'])]
@@ -45,9 +44,8 @@ class CompileController extends AbstractController
     public function compileBootstrap53(#[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto, #[MapQueryParameter] bool $isCached = false): JsonResponse
     {
         $variables = ClassPropertyService::getClassProperties(rootDto: $bootstrap53Dto);
-
         if ($isCached) {
-            return $this->cache->get(sprintf('compiledBootstrap-%s', crc32(serialize($variables))), fn(): \Symfony\Component\HttpFoundation\JsonResponse => $this->getCss($variables));
+            return $this->cache->get(sprintf('compiledBootstrap-%s', crc32(serialize($variables))), fn(): JsonResponse => $this->getCss($variables));
         }
 
         return $this->getCss($variables);
@@ -59,13 +57,6 @@ class CompileController extends AbstractController
     private function getCss(array $variables): JsonResponse
     {
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
-
-        try {
-            return new JsonResponse(data: $css);
-        } catch (Throwable $throwable) {
-            return new JsonResponse(data: [
-                'message' => $throwable->getMessage(),
-            ], status: 500);
-        }
+        return new JsonResponse(data: $css);
     }
 }
