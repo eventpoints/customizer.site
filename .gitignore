@@ -41,3 +41,6 @@ phpstan.neon
 ###> Intellij/PhpStorm ###
 /.idea
 ###< Intellij/PhpStorm ###
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

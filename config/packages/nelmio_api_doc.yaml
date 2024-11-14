@@ -4,6 +4,11 @@ nelmio_api_doc:
             title: customizer.site
             description: This is an awesome app!
             version: v1
+        components:
+            securitySchemes:
+                BearerAuth:
+                    type: http
+                    scheme: bearer
     areas:
         path_patterns:
             - ^/api(?!/doc$)
