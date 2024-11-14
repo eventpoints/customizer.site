@@ -1,6 +1,6 @@
 services:
   php:
-    image: ghcr.io/eventpoints/php:sha-ea6c165
+    image: ghcr.io/eventpoints/php:sha-3249caf
     platform: linux/arm64
     volumes:
       - .:/app:cached
