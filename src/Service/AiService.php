@@ -5,6 +5,7 @@ namespace App\Service;
 use App\DataTransferObject\AiResponseDto;
 use App\Entity\Conversation;
 use App\Entity\Message;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use LLPhant\Chat\Enums\ChatRole;
 use LLPhant\Chat\FunctionInfo\FunctionInfo;
@@ -14,24 +15,24 @@ use LLPhant\OpenAIConfig;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Uid\Uuid;
 
-class AiService
+readonly class AiService
 {
     public function __construct(
-        private readonly Bootstrap53Factory     $bootstrap53Factory,
-        private readonly ParameterBagInterface  $parameterBag,
-        private readonly EntityManagerInterface $entityManager,
+        private Bootstrap53Factory     $bootstrap53Factory,
+        private ParameterBagInterface  $parameterBag,
+        private EntityManagerInterface $entityManager,
     )
     {
     }
 
-    public function ask(string $requestPrompt, Uuid $id): AiResponseDto
+    public function ask(string $requestPrompt, Uuid $id, User $user): AiResponseDto
     {
         $config = new OpenAIConfig();
         $config->model = 'gpt-4o-mini';
         $config->apiKey = $this->parameterBag->get('openaiApiKey');
         $chat = new OpenAIChat($config);
 
-        $conversation = $this->buildConversation($id);
+        $conversation = $this->buildConversation($id, $user);
         $conversation->addMessage((new Message(ChatRole::User))->setContent($requestPrompt));
 
         $tool = $this->getTool();
@@ -61,11 +62,11 @@ class AiService
         );
     }
 
-    private function buildConversation(Uuid $id): Conversation
+    private function buildConversation(Uuid $id, User $user): Conversation
     {
         $conversation = $this->entityManager->getRepository(Conversation::class)->find($id);
         if ($conversation === null) {
-            $conversation = new Conversation($id);
+            $conversation = new Conversation($id, $user);
         }
         return $conversation;
     }

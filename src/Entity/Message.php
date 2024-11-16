@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use LLPhant\Chat\Enums\ChatRole;
 use LLPhant\Chat\Message as LLPhantMessage;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MessageRepository::class)]
+#[Groups('message')]
 class Message
 {
     #[ORM\Id]
@@ -32,7 +34,7 @@ class Message
     #[Ignore]
     private ?Conversation $conversation = null;
 
-    #[ORM\Column(type: Types::BINARY, length: 16777215, nullable: true)]
+    #[ORM\Column(type: Types::BINARY, nullable: true)]
     private mixed $dto = null;
 
     public function __construct(#[ORM\Column(nullable: false, enumType: ChatRole::class)]

@@ -8,24 +8,35 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ConversationRepository::class)]
 class Conversation
 {
     #[ORM\Column]
+    #[Groups('conversation')]
     private DateTimeImmutable $startedAt;
 
     /**
      * @var Collection<int, Message>
      */
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'conversation', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups('message')]
     private Collection $messages;
 
-    public function __construct(#[ORM\Id]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private Uuid $id)
+
+    public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: UuidType::NAME, unique: true)]
+        #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+        #[Groups('conversation')]
+        private Uuid  $id,
+        #[ORM\ManyToOne(inversedBy: 'conversations')]
+        #[Ignore]
+        private ?User $owner = null,
+    )
     {
         $this->messages = new ArrayCollection();
         $this->startedAt = new DateTimeImmutable();
@@ -74,6 +85,18 @@ class Conversation
                 $message->setConversation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }
