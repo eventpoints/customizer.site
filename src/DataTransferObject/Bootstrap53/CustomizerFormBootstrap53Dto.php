@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[OA\Schema(
     title: "Bootstrap 5.3",
 )]
-#[Groups(['form', 'compile'])]
+#[Groups(['form', 'compile', 'ai-generator'])]
 final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
 {
     public function __construct(

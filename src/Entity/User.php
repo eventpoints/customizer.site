@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -28,12 +30,19 @@ class User implements UserInterface
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
+    /**
+     * @var Collection<int, Conversation>
+     */
+    #[ORM\OneToMany(targetEntity: Conversation::class, mappedBy: 'owner', cascade: ['remove'], orphanRemoval: true)]
+    private Collection $conversations;
+
     public function __construct(
         #[ORM\Column(length: 255)] private ?string $email
     )
     {
         $this->id = new UuidV4();
         $this->createdAt = new DateTimeImmutable();
+        $this->conversations = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -74,5 +83,35 @@ class User implements UserInterface
     public function getUserIdentifier(): string
     {
         return $this->getEmail();
+    }
+
+    /**
+     * @return Collection<int, Conversation>
+     */
+    public function getConversations(): Collection
+    {
+        return $this->conversations;
+    }
+
+    public function addConversation(Conversation $conversation): static
+    {
+        if (!$this->conversations->contains($conversation)) {
+            $this->conversations->add($conversation);
+            $conversation->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConversation(Conversation $conversation): static
+    {
+        if ($this->conversations->removeElement($conversation)) {
+            // set the owning side to null (unless already changed)
+            if ($conversation->getOwner() === $this) {
+                $conversation->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }
