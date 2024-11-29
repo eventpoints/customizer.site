@@ -9,8 +9,6 @@ namespace App\Service;
 use Minify_CSSmin;
 use Throwable;
 use ScssPhp\ScssPhp\Compiler;
-use Throwable;
-
 class BootstrapCompilerService
 {
     private readonly Compiler $compiler;

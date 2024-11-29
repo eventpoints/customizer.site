@@ -12,6 +12,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Cache\CacheInterface;
+use Throwable;
 
 #[OA\Tag(name: 'Compile')]
 #[Route(path: '/compile', methods: ['POST'])]
