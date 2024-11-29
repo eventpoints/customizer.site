@@ -7,10 +7,18 @@ namespace App\Service;
 namespace App\Service;
 
 use Minify_CSSmin;
+use Throwable;
 use ScssPhp\ScssPhp\Compiler;
 
 class BootstrapCompilerService
 {
+    private readonly Compiler $compiler;
+
+    public function __construct()
+    {
+        $this->compiler = new Compiler();
+    }
+
     /**
      * @param array<string, string> $variables
      * @return string
@@ -24,7 +32,7 @@ class BootstrapCompilerService
      * @param array<string, string> $variables
      * @return string
      */
-    public function compileCustomBootstrap(array $variables, bool $isMinified = false): string
+    public function compileCustomBootstrap(array $variables, bool $isMinified = false): Throwable|string
     {
         $scssString = ScssService::arrayToScssString(variables: $variables);
 
@@ -36,10 +44,9 @@ class BootstrapCompilerService
     @import "bootstrap";
     SCSS;
 
-        $compiler = new Compiler();
-        $compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
+        $this->compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
+        $css = $this->compiler->compileString($scssContent)->getCss();
 
-        $css = $compiler->compileString($scssContent)->getCss();
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
         }

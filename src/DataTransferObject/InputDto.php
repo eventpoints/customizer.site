@@ -5,6 +5,7 @@ namespace App\DataTransferObject;
 use App\Enumerators\InputTypeEnum;
 use OpenApi\Attributes as OA;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Uid\Uuid;
 
 
 #[OA\Schema(
@@ -13,6 +14,8 @@ use Symfony\Component\Serializer\Attribute\Groups;
 )]
 final readonly class InputDto
 {
+    #[Groups(['form'])]
+    private null|Uuid $id;
 
     /**
      * @param string|null $label
@@ -25,12 +28,22 @@ final readonly class InputDto
         private ?string $label = null,
         #[Groups(['form'])]
         private ?InputTypeEnum $type = null,
-        #[Groups(['form'])]
+        #[Groups(['form', 'ai-generator'])]
         private null|string|bool|float|int $default = null,
-        #[Groups(['form', 'compile'])]
-        private null|string|bool|float|int $value = null
+        #[Groups(['form', 'compile', 'ai-generator'])]
+        private null|string|bool|float|int $value = null,
+        #[Groups(['form'])]
+        private bool $isLocked = false,
+        #[Groups(['ai-generator'])]
+        private bool $isAiGenerable = false
     )
     {
+        $this->id = Uuid::v4();
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
     }
 
     public function getLabel(): ?string
@@ -52,4 +65,15 @@ final readonly class InputDto
     {
         return $this->value;
     }
+
+    public function isLocked(): bool
+    {
+        return $this->isLocked;
+    }
+
+    public function isAiGenerable(): bool
+    {
+        return $this->isAiGenerable;
+    }
+
 }

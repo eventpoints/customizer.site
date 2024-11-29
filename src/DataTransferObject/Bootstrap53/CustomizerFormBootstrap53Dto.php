@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 #[OA\Schema(
     title: "Bootstrap 5.3",
 )]
-#[Groups(['form', 'compile'])]
+#[Groups(['form', 'compile', 'ai-generator'])]
 final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
 {
     public function __construct(
@@ -43,7 +43,7 @@ final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
         private FiguresDto         $figures = new FiguresDto(),
         private BreadCrumbsDto     $breadCrumbs = new BreadCrumbsDto(),
         private CarouselDto        $carousel = new CarouselDto(),
-        private SpinnersDto        $spinnersDto = new SpinnersDto(),
+        private SpinnersDto        $spinners = new SpinnersDto(),
         private CloseDto           $close = new CloseDto(),
         private OffCanvasDto       $offCanvas = new OffCanvasDto(),
         private CodeDto            $code = new CodeDto(),
@@ -201,9 +201,9 @@ final readonly class CustomizerFormBootstrap53Dto implements RootDtoInterface
         return $this->carousel;
     }
 
-    public function getSpinnersDto(): SpinnersDto
+    public function getSpinners(): SpinnersDto
     {
-        return $this->spinnersDto;
+        return $this->spinners;
     }
 
     public function getClose(): CloseDto

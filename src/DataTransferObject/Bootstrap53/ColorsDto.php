@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
     title: "Bootstrap 5.3 - Colors",
     type: "object",
 )]
-#[Groups(['form', 'compile'])]
+#[Groups(['form', 'compile', 'ai-generator'])]
 final readonly class ColorsDto
 {
 
@@ -28,35 +28,35 @@ final readonly class ColorsDto
      * @param InputDto $dark
      */
     public function __construct(
-        private InputDto $primary = new InputDto(label: 'Primary', type: InputTypeEnum::COLOR, default: '#0d6efd'),
-        private InputDto $secondary = new InputDto(label: 'Secondary', type: InputTypeEnum::COLOR, default: '#6c757d'),
-        private InputDto $success = new InputDto(label: 'Success', type: InputTypeEnum::COLOR, default: '#198754'),
-        private InputDto $info = new InputDto(label: 'Info', type: InputTypeEnum::COLOR, default: '#0dcaf0'),
-        private InputDto $warning = new InputDto(label: 'Warning', type: InputTypeEnum::COLOR, default: '#ffc107'),
-        private InputDto $danger = new InputDto(label: 'Danger', type: InputTypeEnum::COLOR, default: '#dc3545'),
-        private InputDto $light = new InputDto(label: 'Light', type: InputTypeEnum::COLOR, default: '#f8f9fa'),
-        private InputDto $dark = new InputDto(label: 'Dark', type: InputTypeEnum::COLOR, default: '#212529'),
-        private InputDto $blue = new InputDto(label: 'Blue', type: InputTypeEnum::COLOR, default: '#0d6efd'),
-        private InputDto $indigo = new InputDto(label: 'Indigo', type: InputTypeEnum::COLOR, default: '#6610f2'),
-        private InputDto $purple = new InputDto(label: 'Purple', type: InputTypeEnum::COLOR, default: '#6f42c1'),
-        private InputDto $pink = new InputDto(label: 'Pink', type: InputTypeEnum::COLOR, default: '#d63384'),
-        private InputDto $red = new InputDto(label: 'Red', type: InputTypeEnum::COLOR, default: '#dc3545'),
-        private InputDto $orange = new InputDto(label: 'Orange', type: InputTypeEnum::COLOR, default: '#fd7e14'),
-        private InputDto $yellow = new InputDto(label: 'Yellow', type: InputTypeEnum::COLOR, default: '#ffc107'),
-        private InputDto $green = new InputDto(label: 'Green', type: InputTypeEnum::COLOR, default: '#198754'),
-        private InputDto $teal = new InputDto(label: 'Teal', type: InputTypeEnum::COLOR, default: '#20c997'),
-        private InputDto $cyan = new InputDto(label: 'Cyan', type: InputTypeEnum::COLOR, default: '#0dcaf0'),
-        private InputDto $white = new InputDto(label: 'White', type: InputTypeEnum::COLOR, default: '#ffffff'),
-        private InputDto $gray100 = new InputDto(label: 'Gray 100', type: InputTypeEnum::COLOR, default: '#f8f9fa'),
-        private InputDto $gray200 = new InputDto(label: 'Gray 200', type: InputTypeEnum::COLOR, default: '#e9ecef'),
-        private InputDto $gray300 = new InputDto(label: 'Gray 300', type: InputTypeEnum::COLOR, default: '#dee2e6'),
-        private InputDto $gray400 = new InputDto(label: 'Gray 400', type: InputTypeEnum::COLOR, default: '#ced4da'),
-        private InputDto $gray500 = new InputDto(label: 'Gray 500', type: InputTypeEnum::COLOR, default: '#adb5bd'),
-        private InputDto $gray600 = new InputDto(label: 'Gray 600', type: InputTypeEnum::COLOR, default: '#6c757d'),
-        private InputDto $gray700 = new InputDto(label: 'Gray 700', type: InputTypeEnum::COLOR, default: '#495057'),
-        private InputDto $gray800 = new InputDto(label: 'Gray 800', type: InputTypeEnum::COLOR, default: '#343a40'),
-        private InputDto $gray900 = new InputDto(label: 'Gray 900', type: InputTypeEnum::COLOR, default: '#212529'),
-        private InputDto $black = new InputDto(label: 'Black', type: InputTypeEnum::COLOR, default: '#000000')
+        private InputDto $primary = new InputDto(label: 'Primary', type: InputTypeEnum::COLOR, default: '#0d6efd', isAiGenerable: true),
+        private InputDto $secondary = new InputDto(label: 'Secondary', type: InputTypeEnum::COLOR, default: '#6c757d', isAiGenerable: true),
+        private InputDto $success = new InputDto(label: 'Success', type: InputTypeEnum::COLOR, default: '#198754', isAiGenerable: true),
+        private InputDto $info = new InputDto(label: 'Info', type: InputTypeEnum::COLOR, default: '#0dcaf0', isAiGenerable: true),
+        private InputDto $warning = new InputDto(label: 'Warning', type: InputTypeEnum::COLOR, default: '#ffc107', isAiGenerable: true),
+        private InputDto $danger = new InputDto(label: 'Danger', type: InputTypeEnum::COLOR, default: '#dc3545', isAiGenerable: true),
+        private InputDto $light = new InputDto(label: 'Light', type: InputTypeEnum::COLOR, default: '#f8f9fa', isAiGenerable: true),
+        private InputDto $dark = new InputDto(label: 'Dark', type: InputTypeEnum::COLOR, default: '#212529', isAiGenerable: true),
+        private InputDto $blue = new InputDto(label: 'Blue', type: InputTypeEnum::COLOR, default: '#0d6efd', isAiGenerable: true),
+        private InputDto $indigo = new InputDto(label: 'Indigo', type: InputTypeEnum::COLOR, default: '#6610f2', isAiGenerable: true),
+        private InputDto $purple = new InputDto(label: 'Purple', type: InputTypeEnum::COLOR, default: '#6f42c1', isAiGenerable: true),
+        private InputDto $pink = new InputDto(label: 'Pink', type: InputTypeEnum::COLOR, default: '#d63384', isAiGenerable: true),
+        private InputDto $red = new InputDto(label: 'Red', type: InputTypeEnum::COLOR, default: '#dc3545', isAiGenerable: true),
+        private InputDto $orange = new InputDto(label: 'Orange', type: InputTypeEnum::COLOR, default: '#fd7e14', isAiGenerable: true),
+        private InputDto $yellow = new InputDto(label: 'Yellow', type: InputTypeEnum::COLOR, default: '#ffc107', isAiGenerable: true),
+        private InputDto $green = new InputDto(label: 'Green', type: InputTypeEnum::COLOR, default: '#198754', isAiGenerable: true),
+        private InputDto $teal = new InputDto(label: 'Teal', type: InputTypeEnum::COLOR, default: '#20c997', isAiGenerable: true),
+        private InputDto $cyan = new InputDto(label: 'Cyan', type: InputTypeEnum::COLOR, default: '#0dcaf0', isAiGenerable: true),
+        private InputDto $white = new InputDto(label: 'White', type: InputTypeEnum::COLOR, default: '#ffffff', isAiGenerable: true),
+        private InputDto $gray100 = new InputDto(label: 'Gray 100', type: InputTypeEnum::COLOR, default: '#f8f9fa', isAiGenerable: true),
+        private InputDto $gray200 = new InputDto(label: 'Gray 200', type: InputTypeEnum::COLOR, default: '#e9ecef', isAiGenerable: true),
+        private InputDto $gray300 = new InputDto(label: 'Gray 300', type: InputTypeEnum::COLOR, default: '#dee2e6', isAiGenerable: true),
+        private InputDto $gray400 = new InputDto(label: 'Gray 400', type: InputTypeEnum::COLOR, default: '#ced4da', isAiGenerable: true),
+        private InputDto $gray500 = new InputDto(label: 'Gray 500', type: InputTypeEnum::COLOR, default: '#adb5bd', isAiGenerable: true),
+        private InputDto $gray600 = new InputDto(label: 'Gray 600', type: InputTypeEnum::COLOR, default: '#6c757d', isAiGenerable: true),
+        private InputDto $gray700 = new InputDto(label: 'Gray 700', type: InputTypeEnum::COLOR, default: '#495057', isAiGenerable: true),
+        private InputDto $gray800 = new InputDto(label: 'Gray 800', type: InputTypeEnum::COLOR, default: '#343a40', isAiGenerable: true),
+        private InputDto $gray900 = new InputDto(label: 'Gray 900', type: InputTypeEnum::COLOR, default: '#212529', isAiGenerable: true),
+        private InputDto $black = new InputDto(label: 'Black', type: InputTypeEnum::COLOR, default: '#000000', isAiGenerable: false),
     ) {}
 
     public function getBodyBg(): InputDto
