@@ -15,9 +15,9 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final readonly class GridColumnsDto
 {
     public function __construct(
-        private InputDto $gridColumns = new InputDto(label: 'Grid Columns', type: InputTypeEnum::INTEGER, default: '12'),
+        private InputDto $gridColumns = new InputDto(label: 'Grid Columns', type: InputTypeEnum::INTEGER, default: '12', isLocked: true),
         private InputDto $gridGutterWidth = new InputDto(label: 'Grid Gutter Width', type: InputTypeEnum::SIZE, default: '1.5rem'),
-        private InputDto $gridRowColumns = new InputDto(label: 'Grid Row Columns', type: InputTypeEnum::INTEGER, default: '6'),
+        private InputDto $gridRowColumns = new InputDto(label: 'Grid Row Columns', type: InputTypeEnum::INTEGER, default: '6', isLocked: true),
     )
     {
     }

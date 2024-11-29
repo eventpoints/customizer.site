@@ -57,6 +57,7 @@ class CompileController extends AbstractController
     private function getCss(array $variables): JsonResponse
     {
         $css = $this->bootstrapCompilerService->compileCustomBootstrap(variables: $variables);
+
         return new JsonResponse(data: $css);
     }
 }

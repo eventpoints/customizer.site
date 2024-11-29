@@ -1,7 +1,8 @@
 <template>
   <div>
-    <label class="fw-bold text-muted text-capitalize" :for="modelValue.label">{{ modelValue.label }}</label>
-    {{this.modelValue.value}}
+    <label class="fw-bold text-muted text-capitalize" :for="modelValue.label">
+      {{this.modelValue}}
+      { modelValue.label }}</label>
     <div class="input-group w-100">
       <!-- Input for the size value -->
 

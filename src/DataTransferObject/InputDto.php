@@ -65,15 +65,14 @@ final readonly class InputDto
     {
         return $this->value;
     }
+    public function isAiGenerable(): bool
+    {
+        return $this->isAiGenerable;
+    }
 
     public function isLocked(): bool
     {
         return $this->isLocked;
-    }
-
-    public function isAiGenerable(): bool
-    {
-        return $this->isAiGenerable;
     }
 
 }

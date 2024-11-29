@@ -15,17 +15,15 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final readonly class CodeDto
 {
     public function __construct(
-        private InputDto $codeFontSize = new InputDto(label: 'Code Font Size', type: InputTypeEnum::SIZE, default: '$small-font-size'),
-        private InputDto $codeColor = new InputDto(label: 'Code Color', type: InputTypeEnum::COLOR, default: '$pink'),
-
-        private InputDto $kbdPaddingY = new InputDto(label: 'Kbd Padding Y', type: InputTypeEnum::SIZE, default: '.1875rem'),
-        private InputDto $kbdPaddingX = new InputDto(label: 'Kbd Padding X', type: InputTypeEnum::SIZE, default: '.375rem'),
-        private InputDto $kbdFontSize = new InputDto(label: 'Kbd Font Size', type: InputTypeEnum::SIZE, default: '$code-font-size'),
-        private InputDto $kbdColor = new InputDto(label: 'Kbd Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}body-bg)'),
-        private InputDto $kbdBg = new InputDto(label: 'Kbd Bg', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}body-color)'),
-        private InputDto $nestedKbdFontWeight = new InputDto(label: 'Nested Kbd Font Weight', type: InputTypeEnum::STRING, default: 'null'), // Deprecated in v5.2.0, removing in v6
-
-        private InputDto $preColor = new InputDto(label: 'Pre Color', type: InputTypeEnum::COLOR, default: 'null'), // Unsure if this should be COLOR or STRING
+        private InputDto $codeFontSize = new InputDto(label: 'Code Font Size', type: InputTypeEnum::SIZE, default: '$small-font-size', isLocked: true),
+        private InputDto $codeColor = new InputDto(label: 'Code Color', type: InputTypeEnum::COLOR, default: '$pink', isLocked: true),
+        private InputDto $kbdPaddingY = new InputDto(label: 'Kbd Padding Y', type: InputTypeEnum::SIZE, default: '.1875rem', isLocked: true),
+        private InputDto $kbdPaddingX = new InputDto(label: 'Kbd Padding X', type: InputTypeEnum::SIZE, default: '.375rem', isLocked: true),
+        private InputDto $kbdFontSize = new InputDto(label: 'Kbd Font Size', type: InputTypeEnum::SIZE, default: '$code-font-size', isLocked: true),
+        private InputDto $kbdColor = new InputDto(label: 'Kbd Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}body-bg)', isLocked: true),
+        private InputDto $kbdBg = new InputDto(label: 'Kbd Bg', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}body-color)', isLocked: true),
+        private InputDto $nestedKbdFontWeight = new InputDto(label: 'Nested Kbd Font Weight', type: InputTypeEnum::STRING, default: 'null', isLocked: true), // Deprecated in v5.2.0, removing in v6
+        private InputDto $preColor = new InputDto(label: 'Pre Color', type: InputTypeEnum::COLOR, default: 'null', isLocked: true), // Unsure if this should be COLOR or STRING
     )
     {
     }
