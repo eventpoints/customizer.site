@@ -9,7 +9,6 @@ namespace App\Service;
 use Minify_CSSmin;
 use Throwable;
 use ScssPhp\ScssPhp\Compiler;
-
 class BootstrapCompilerService
 {
     private readonly Compiler $compiler;
@@ -38,8 +37,8 @@ class BootstrapCompilerService
 
         $scssContent = <<<SCSS
     @import "functions";
-    $scssString
     @import "variables";
+    $scssString
     @import "mixins";
     @import "bootstrap";
     SCSS;

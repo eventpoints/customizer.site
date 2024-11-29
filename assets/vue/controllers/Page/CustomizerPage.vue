@@ -56,7 +56,7 @@
               <div class="hstack gap-2">
                 <a v-if="sectionKey === 'colors'"
                    class="btn btn-light rounded-pill bi bi-shuffle fs-5"
-                   @click="randomizeColors"></a>
+                   @click="setRandomVariables"></a>
                 <a
                     :data-bs-target="'#collapse' + sectionKey"
                     :aria-expanded="expandedSections[sectionKey] || false"
@@ -215,8 +215,8 @@ export default {
       }
     };
 
-    const randomizeColors = () => {
-      store.setRandomColorVariables();
+    const setRandomVariables = () => {
+      store.setRandomVariables();
     };
 
     const filteredSections = computed(() => {
@@ -261,7 +261,7 @@ export default {
       filteredSections,
       previewFrame,
       errorMessage,
-      randomizeColors,
+      setRandomVariables,
       expandedSections,
       toggleSection,
       download,

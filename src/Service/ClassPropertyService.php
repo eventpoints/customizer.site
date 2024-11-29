@@ -46,7 +46,7 @@ final readonly class ClassPropertyService
      */
     private static function sortVariables(array $variables): array
     {
-        uasort($variables, function ($valueA, $keyA) use ($variables): int {
+        uasort($variables, function (string $valueA, string $keyA) use ($variables): int {
             if (str_starts_with($valueA, '$')) {
                 $referencedKey = substr($valueA, 1);
                 return array_key_exists($referencedKey, $variables) ? 1 : 0;
