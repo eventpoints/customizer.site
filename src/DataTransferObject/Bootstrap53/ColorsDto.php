@@ -26,6 +26,27 @@ final readonly class ColorsDto
      * @param InputDto $danger
      * @param InputDto $light
      * @param InputDto $dark
+     * @param InputDto $blue
+     * @param InputDto $indigo
+     * @param InputDto $purple
+     * @param InputDto $pink
+     * @param InputDto $red
+     * @param InputDto $orange
+     * @param InputDto $yellow
+     * @param InputDto $green
+     * @param InputDto $teal
+     * @param InputDto $cyan
+     * @param InputDto $white
+     * @param InputDto $gray100
+     * @param InputDto $gray200
+     * @param InputDto $gray300
+     * @param InputDto $gray400
+     * @param InputDto $gray500
+     * @param InputDto $gray600
+     * @param InputDto $gray700
+     * @param InputDto $gray800
+     * @param InputDto $gray900
+     * @param InputDto $black
      */
     public function __construct(
         private InputDto $primary = new InputDto(label: 'Primary', type: InputTypeEnum::COLOR, default: '#0d6efd', isAiGenerable: true),
@@ -58,12 +79,6 @@ final readonly class ColorsDto
         private InputDto $gray900 = new InputDto(label: 'Gray 900', type: InputTypeEnum::COLOR, default: '#212529', isAiGenerable: true),
         private InputDto $black = new InputDto(label: 'Black', type: InputTypeEnum::COLOR, default: '#000000', isAiGenerable: false),
     ) {}
-
-    public function getBodyBg(): InputDto
-    {
-        return $this->bodyBg;
-    }
-
     public function getPrimary(): InputDto
     {
         return $this->primary;
