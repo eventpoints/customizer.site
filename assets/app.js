@@ -5,6 +5,5 @@ import './styles/app.scss';
 import axios from 'axios';
 
 axios.defaults.baseURL = process.env.AXIOS_BASE_URL;
-console.log(process.env.AXIOS_BASE_URL)
 registerVueControllerComponents(require.context('./vue/controllers', true, /\.vue$/));
 registerVueControllerComponents();

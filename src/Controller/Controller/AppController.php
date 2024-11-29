@@ -8,6 +8,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AppController extends AbstractController
 {
+    #[Route(path: '/app', name: 'app')]
+    public function app(): Response
+    {
+        return $this->render('app/app.html.twig');
+    }
+
     #[Route(path: '/', name: 'landing')]
     public function landing(): Response
     {

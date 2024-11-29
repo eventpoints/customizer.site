@@ -15,17 +15,17 @@ use Symfony\Component\Serializer\Attribute\Groups;
 final readonly class BreadCrumbsDto
 {
     public function __construct(
-        private InputDto $breadcrumbFontSize = new InputDto(label: 'Breadcrumb Font Size', type: InputTypeEnum::SIZE, default: 'null'), // Assuming SIZE type for font-size
-        private InputDto $breadcrumbPaddingY = new InputDto(label: 'Breadcrumb Padding Y', type: InputTypeEnum::FLOAT, default: '0'),
-        private InputDto $breadcrumbPaddingX = new InputDto(label: 'Breadcrumb Padding X', type: InputTypeEnum::FLOAT, default: '0'),
-        private InputDto $breadcrumbItemPaddingX = new InputDto(label: 'Breadcrumb Item Padding X', type: InputTypeEnum::FLOAT, default: '.5rem'),
-        private InputDto $breadcrumbMarginBottom = new InputDto(label: 'Breadcrumb Margin Bottom', type: InputTypeEnum::FLOAT, default: '1rem'),
+        private InputDto $breadcrumbFontSize = new InputDto(label: 'Breadcrumb Font Size', type: InputTypeEnum::SIZE, default: 'null', isLocked: true), // Assuming SIZE type for font-size
+        private InputDto $breadcrumbPaddingY = new InputDto(label: 'Breadcrumb Padding Y', type: InputTypeEnum::FLOAT, default: '0', isLocked: true),
+        private InputDto $breadcrumbPaddingX = new InputDto(label: 'Breadcrumb Padding X', type: InputTypeEnum::FLOAT, default: '0', isLocked: true),
+        private InputDto $breadcrumbItemPaddingX = new InputDto(label: 'Breadcrumb Item Padding X', type: InputTypeEnum::FLOAT, default: '.5rem', isLocked: true),
+        private InputDto $breadcrumbMarginBottom = new InputDto(label: 'Breadcrumb Margin Bottom', type: InputTypeEnum::FLOAT, default: '1rem', isLocked: true),
         private InputDto $breadcrumbBg = new InputDto(label: 'Breadcrumb Bg', type: InputTypeEnum::COLOR, default: 'null'), // Assuming COLOR type for background
         private InputDto $breadcrumbDividerColor = new InputDto(label: 'Breadcrumb Divider Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}secondary-color)'),
         private InputDto $breadcrumbActiveColor = new InputDto(label: 'Breadcrumb Active Color', type: InputTypeEnum::COLOR, default: 'var(--#{$prefix}secondary-color)'),
-        private InputDto $breadcrumbDivider = new InputDto(label: 'Breadcrumb Divider', type: InputTypeEnum::STRING, default: 'quote("/")'),
-        private InputDto $breadcrumbDividerFlipped = new InputDto(label: 'Breadcrumb Divider Flipped', type: InputTypeEnum::STRING, default: '$breadcrumb-divider'),
-        private InputDto $breadcrumbBorderRadius = new InputDto(label: 'Breadcrumb Border Radius', type: InputTypeEnum::SIZE, default: 'null') // Assuming SIZE type for border-radius
+        private InputDto $breadcrumbDivider = new InputDto(label: 'Breadcrumb Divider', type: InputTypeEnum::STRING, default: 'quote("/")', isLocked: true),
+        private InputDto $breadcrumbDividerFlipped = new InputDto(label: 'Breadcrumb Divider Flipped', type: InputTypeEnum::STRING, default: '$breadcrumb-divider', isLocked: true),
+        private InputDto $breadcrumbBorderRadius = new InputDto(label: 'Breadcrumb Border Radius', type: InputTypeEnum::SIZE, default: 'null' , isLocked: true) // Assuming SIZE type for border-radius
     )
     {
     }
