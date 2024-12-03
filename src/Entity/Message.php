@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Doctrine\UuidV4Generator;
 use App\Repository\MessageRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -20,7 +21,7 @@ class Message
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidV4Generator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(type: Types::TEXT)]
