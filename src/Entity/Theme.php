@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
@@ -26,6 +27,11 @@ class Theme
 
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
+
+    #[ORM\ManyToOne(inversedBy: 'themes')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
+    private User $owner;
 
     public function __construct(
         #[ORM\Column(length: 255)]
@@ -74,6 +80,18 @@ class Theme
     public function setDto(object $dto): static
     {
         $this->dto = serialize($dto);
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }
