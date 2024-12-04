@@ -103,11 +103,37 @@
             <div class="card-body">
               <h1 class="card-title pricing-card-title py-3">€12<small class="text-body-secondary fw-light">/mo</small>
               </h1>
-              <a href="/app" class="btn btn-primary px-5" type="button">
-                Purchase Now
-              </a>
+              <div class="vstack gap-3">
+                <div class="form-floating">
+                  <input type="email" class="form-control" :class="{'is-invalid': !isEmailValid && email !== ''}"
+                         id="email-address" v-model="email"
+                         placeholder="E-mail Address">
+                  <label for="email-address">E-mail Address</label>
+                </div>
+                <button @click="sendRegistrationEmail" class="btn btn-primary w-100" type="button">
+                  Purchase Now
+                </button>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="login-response-modal" class="modal fade" tabindex="-1" aria-labelledby="loginResponseModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div>
+            <i class="bi bi-check-circle-fill fs-1 text-success"></i>
+          </div>
+          <div>
+            Please check your email account to continue to payment processing.
+          </div>
+        </div>
+        <div class="modal-footer text-center">
+          <button type="button" class="btn btn-primary w-100" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -115,19 +141,62 @@
 </template>
 
 <script>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { store } from "../../Store/store";
+import {ref, computed, onMounted, onUnmounted} from 'vue';
+import {store} from "../../Store/store";
 import axios from "axios";
+import {Modal} from "bootstrap";
 
 export default {
   setup() {
+    const email = ref('');           // Number of projects per month
     const projects = ref(15);           // Number of projects per month
     const hourlyCost = ref(67.23);      // Average hourly cost in euros
     const configTime = ref(3);          // Average hours spent on configuring Bootstrap per project
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const isEmailValid = computed(() => {
+      return emailRegex.test(email.value);
+    });
+
+    const showModal = (() => {
+      const modalElement = document.getElementById('login-response-modal');
+      const modal = new Modal(modalElement, {
+        keyboard: false,
+        backdrop: 'static',
+        focus: true,
+      });
+      modal.show();
+    });
 
     const setRandomVariables = () => {
       store.setRandomVariables();
       compile();
+    };
+
+    // Function to send registration email
+    const sendRegistrationEmail = async () => {
+      if (!email.value.trim()) {
+        alert("Email cannot be empty.");
+        return;
+      }
+
+      if (!isEmailValid.value) {
+        alert("Please enter a valid email address.");
+        return;
+      }
+
+      try {
+        const response = await axios.get('api/v1/auth/login', {
+          params: {
+            email: email.value
+          }
+        }).then((response) => {
+          showModal();
+        });
+      } catch (error) {
+        console.error('Error during email registration:', error.response?.data || error.message);
+        alert("There was an error processing your request. Please try again.");
+      }
     };
 
     const compile = async () => {
@@ -158,6 +227,7 @@ export default {
     const annualSavings = computed(() => {
       return (hourlyCost.value * configTime.value) * projects.value * 12;
     });
+
 
     const formattedAnnualSavings = computed(() => {
       return new Intl.NumberFormat('en-US', {
@@ -191,6 +261,9 @@ export default {
       configTime,
       store,
       formattedAnnualSavings,
+      email,
+      isEmailValid,
+      sendRegistrationEmail,
     };
   },
 };
