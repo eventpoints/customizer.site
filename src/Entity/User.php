@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Doctrine\UuidV4Generator;
 use App\Repository\UserRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Uid\UuidV4;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -19,7 +19,9 @@ class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
-    private Uuid $id;
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidV4Generator::class)]
+    private ?Uuid $id = null;
 
     #[ORM\Column]
     private DateTimeImmutable $createdAt;
@@ -40,7 +42,6 @@ class User implements UserInterface
         #[ORM\Column(length: 255)] private ?string $email
     )
     {
-        $this->id = new UuidV4();
         $this->createdAt = new DateTimeImmutable();
         $this->conversations = new ArrayCollection();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Doctrine\UuidV4Generator;
 use App\Repository\ConversationRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,7 +31,7 @@ class Conversation
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: UuidType::NAME, unique: true)]
-        #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+        #[ORM\CustomIdGenerator(class: UuidV4Generator::class)]
         #[Groups('conversation')]
         private Uuid  $id,
         #[ORM\ManyToOne(inversedBy: 'conversations')]
