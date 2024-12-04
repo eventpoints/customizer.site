@@ -38,12 +38,19 @@ class User implements UserInterface
     #[ORM\OneToMany(targetEntity: Conversation::class, mappedBy: 'owner', cascade: ['remove'], orphanRemoval: true)]
     private Collection $conversations;
 
+    /**
+     * @var Collection<int, Theme>
+     */
+    #[ORM\OneToMany(targetEntity: Theme::class, mappedBy: 'owner', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $themes;
+
     public function __construct(
         #[ORM\Column(length: 255)] private ?string $email
     )
     {
         $this->createdAt = new DateTimeImmutable();
         $this->conversations = new ArrayCollection();
+        $this->themes = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -110,6 +117,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($conversation->getOwner() === $this) {
                 $conversation->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Theme>
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): static
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+            $theme->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): static
+    {
+        if ($this->themes->removeElement($theme)) {
+            // set the owning side to null (unless already changed)
+            if ($theme->getOwner() === $this) {
+                $theme->setOwner(null);
             }
         }
 

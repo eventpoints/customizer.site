@@ -4,16 +4,18 @@ namespace App\Controller\Api;
 
 use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
 use App\Entity\Theme;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[OA\Tag(name: 'Theme Storage')]
-#[Route("/theme")]
+#[Route("/themes")]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class ThemeStorageController extends AbstractController
 {
@@ -38,16 +40,31 @@ class ThemeStorageController extends AbstractController
     #[OA\Response(
         response: 201,
         description: 'Returns stored variables json',
-        content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
     #[OA\Post(security: [['BearerAuth' => []]])]
     #[Route("/{title}", methods: ['POST'])]
-    public function post(string $title, #[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto): Response
+    public function post(
+        string                                                                                             $title,
+        #[MapRequestPayload(serializationContext: ['groups' => ['compile']])] CustomizerFormBootstrap53Dto $bootstrap53Dto,
+        #[CurrentUser] User                                                                                $user
+    ): Response
     {
-        $theme = new Theme($title, $bootstrap53Dto);
-        $this->em->persist($theme);
+        $theme = new Theme(name: $title, dto: $bootstrap53Dto);
+
+        $this->em->persist($user->addTheme($theme));
         $this->em->flush();
         return $this->json($theme, Response::HTTP_CREATED);
+    }
+
+    #[OA\Response(
+        response: 200,
+        description: 'Returns list of themes',
+    )]
+    #[OA\Get(security: [['BearerAuth' => []]])]
+    #[Route("", methods: ['GET'])]
+    public function getAll(#[CurrentUser] User $user): Response
+    {
+        return $this->json($user->getThemes());
     }
 
     #[OA\Parameter(
@@ -60,7 +77,6 @@ class ThemeStorageController extends AbstractController
     #[OA\Response(
         response: 200,
         description: 'Returns stored variables json',
-        content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
     #[OA\Get(security: [['BearerAuth' => []]])]
     #[Route("/{id}", methods: ['GET'])]
@@ -84,7 +100,6 @@ class ThemeStorageController extends AbstractController
     #[OA\Response(
         response: 202,
         description: 'Returns updated variables json',
-        content: new OA\MediaType(mediaType: 'text/css|text/x-scss')
     )]
     #[OA\Patch(security: [['BearerAuth' => []]])]
     #[Route("/{id}", methods: ['PATCH'])]
