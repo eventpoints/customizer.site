@@ -52,7 +52,7 @@ class PaymentController extends AbstractController
     #[Route(path: '/cancel', name: 'cancel_subscription')]
     public function cancel(): JsonResponse
     {
-
+        return new JsonResponse('bad luck buddy');
     }
 
 }

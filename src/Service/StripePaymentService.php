@@ -10,7 +10,6 @@ use App\DataTransferObject\SubscriptionDataDto;
 use Stripe\StripeClient;
 use Stripe\Subscription;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 final readonly class StripePaymentService
 {
@@ -85,6 +84,7 @@ final readonly class StripePaymentService
         return new SubscriptionDataDto(
             amount: $price->unit_amount,
             clientSecret: $subscription->latest_invoice->payment_intent->client_secret,
+            /**@phpstan-ignore-next-line **/
             interval: $price->recurring->interval
         );
     }

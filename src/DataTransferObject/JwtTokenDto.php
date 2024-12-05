@@ -4,12 +4,13 @@ namespace App\DataTransferObject;
 
 class JwtTokenDto
 {
-
-
     public function __construct(
         private readonly string $email,
         private readonly int    $exp,
         private readonly string $iss,
+        /**
+         * @var array<string>
+         */
         private readonly array  $roles,
     )
     {
@@ -30,6 +31,9 @@ class JwtTokenDto
         return $this->iss;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return $this->roles;
