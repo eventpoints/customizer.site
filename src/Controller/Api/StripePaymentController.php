@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
 
 #[Route(path: '/payment')]
-class PaymentController extends AbstractController
+class StripePaymentController extends AbstractController
 {
 
     public function __construct(
