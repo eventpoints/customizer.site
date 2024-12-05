@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AuthorizationController extends AbstractController
 {
-    #[Route(path: '/authorize', methods: [Request::METHOD_GET])]
+    #[Route(path: '/authorize', name: 'app_authorization_authorize', methods: [Request::METHOD_GET])]
     public function authorize(#[MapQueryParameter] string $token): void
     {
         // Handled by QueryTokenAuthorization. Used only for path

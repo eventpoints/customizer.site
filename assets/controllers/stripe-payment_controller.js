@@ -79,9 +79,7 @@ export default class extends Controller {
             this.showMessage("Payment failed. Please try again.");
             return;
         }
-
     }
-
 
     showMessage(messageText) {
         this.paymentMessageTarget.classList.remove("hidden");
