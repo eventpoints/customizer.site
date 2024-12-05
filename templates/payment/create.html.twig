@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <div class="container" {{ stimulus_controller('stripe-payment', {
+        jwtToken: app.request.get('token'),
+        publicKey: stripe_public_key,
+        paymentDetailsPath: path('pay_subscription'),
+        csrfToken: csrf_token('payment_token'),
+        authenticatePath: url('app_api_authorization_authorize', {token: app.request.get('token')}),
+        returnPath: url('app_api_authorization_authorize', {token: app.request.get('token')})
+    }) }}>
+        <div class="row justify-content-center my-3 min-vh-100 align-items-center">
+            <div class="col-6">
+                <form id="payment-form" {{ stimulus_action('stripe-payment', 'handleSubmit') }}>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 {{ stimulus_target('stripe-payment', 'amount') }}></h3>
+                            <div class="text-muted" {{ stimulus_target('stripe-payment', 'interval') }}></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center py-5" {{ stimulus_target('stripe-payment', 'spinner') }}>
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                            <div id="payment-message"
+                                 class="hidden" {{ stimulus_target('stripe-payment', 'paymentMessage') }}></div>
+                            <div id="payment-element" {{ stimulus_target('stripe-payment', 'paymentElement') }}>
+                                <!--Stripe.js injects the Payment Element-->
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button class="btn btn-primary w-100"
+                                    id="submit" {{ stimulus_target('stripe-payment', 'submit') }}>
+                                <span id="button-text" {{ stimulus_target('stripe-payment', 'buttonText') }}>Pay now</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

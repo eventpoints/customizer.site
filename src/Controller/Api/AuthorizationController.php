@@ -36,7 +36,6 @@ class AuthorizationController extends AbstractController
     public function login(#[MapQueryParameter] string $email): JsonResponse
     {
         $this->authorizationService->sentLoginEmail($email);
-
         return $this->json('ok');
     }
 
@@ -50,7 +49,7 @@ class AuthorizationController extends AbstractController
         description: 'Verify user and responds with user object and cookie with token',
         content: new OA\MediaType(mediaType: 'application/json')
     )]
-    #[Route(path: '/authorize', methods: ['POST'])]
+    #[Route(path: '/authorize', methods: [Request::METHOD_GET])]
     public function authorize(#[MapQueryParameter] string $token): JsonResponse
     {
         $user = $this->authorizationService->verifyToken($token);

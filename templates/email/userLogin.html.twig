@@ -1,3 +1,14 @@
-Hello {{ email }}
+{% extends 'email/email.base.html.twig' %}
 
-Login on this <a target="_blank" href="{{ path('app_api_authorization_authorize', {'token': token}) }}">LINK</a>
+{% block content %}
+    <div style="text-align: center">
+        <h1 style="margin-bottom: 10px;">{{ 'hello'|trans({emailAddress: emailAddress}) }}</h1>
+        <p>{{ 'email.auth-body-text'|trans }}</p>
+        <a class="btn btn-primary" style="margin: 10px 0;" target="_blank"
+           href="{{ url('create_payment', {'token': token}) }}">
+            {{ 'continue-to-payment'|trans }}
+        </a>
+        <hr/>
+        <div style="font-size:10px;color: #cccccc">{{ 'email.disclaimer'|trans }}</div>
+    </div>
+{% endblock %}

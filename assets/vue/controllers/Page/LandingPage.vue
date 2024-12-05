@@ -191,6 +191,7 @@ export default {
             email: email.value
           }
         }).then((response) => {
+          console.log(response.data)
           showModal();
         });
       } catch (error) {
