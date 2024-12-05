@@ -8,7 +8,6 @@
         publicKey: stripe_public_key,
         paymentDetailsPath: path('pay_subscription'),
         csrfToken: csrf_token('payment_token'),
-        authenticatePath: url('app_api_authorization_authorize', {token: app.request.get('token')}),
         returnPath: url('app_api_authorization_authorize', {token: app.request.get('token')})
     }) }}>
         <div class="row justify-content-center my-3 min-vh-100 align-items-center">

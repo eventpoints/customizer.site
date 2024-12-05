@@ -1,14 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use App\DataTransferObject\Bootstrap53\CustomizerFormBootstrap53Dto;
-use App\DataTransferObject\PaymentAmountDto;
-use App\DataTransferObject\SubscriptionDataDto;
-use App\Entity\User;
 use App\Service\AuthorizationService;
 use App\Service\StripePaymentService;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

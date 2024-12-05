@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\DataTransferObject;
 
@@ -7,9 +7,9 @@ class SubscriptionDataDto
 
 
     public function __construct(
-        private int    $amount,
-        private string $clientSecret,
-        private string $interval,
+        private readonly int    $amount,
+        private readonly string $clientSecret,
+        private readonly string $interval,
     )
     {
     }

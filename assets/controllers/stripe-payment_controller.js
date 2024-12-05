@@ -9,7 +9,6 @@ export default class extends Controller {
         publicKey: String,
         paymentDetailsPath: String,
         csrfToken: String,
-        authenticatePath: String,
         returnPath: String
     }
 

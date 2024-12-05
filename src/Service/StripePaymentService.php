@@ -7,7 +7,6 @@ namespace App\Service;
 use App\DataTransferObject\PaymentAmountDto;
 use App\DataTransferObject\StripePaymentIntentDto;
 use App\DataTransferObject\SubscriptionDataDto;
-use Stripe\Exception\InvalidRequestException;
 use Stripe\StripeClient;
 use Stripe\Subscription;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -19,7 +18,6 @@ final readonly class StripePaymentService
     public function __construct(
         private ParameterBagInterface $parameterBag,
         private AuthorizationService  $authorizationService,
-        private UrlGeneratorInterface $urlGenerator
     )
     {
     }

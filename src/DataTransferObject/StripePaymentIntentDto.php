@@ -7,17 +7,12 @@ namespace App\DataTransferObject;
 final readonly class StripePaymentIntentDto
 {
 
-    private string $clientSecret;
-    private string $paymentIntentId;
-
     /**
      * @param string $clientSecret
      * @param string $paymentIntentId
      */
-    public function __construct(string $clientSecret, string $paymentIntentId)
+    public function __construct(private string $clientSecret, private string $paymentIntentId)
     {
-        $this->clientSecret = $clientSecret;
-        $this->paymentIntentId = $paymentIntentId;
     }
 
     public function getClientSecret(): string

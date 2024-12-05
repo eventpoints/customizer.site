@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\DataTransferObject;
 
@@ -7,10 +7,10 @@ class JwtTokenDto
 
 
     public function __construct(
-        private string $email,
-        private int    $exp,
-        private string $iss,
-        private array  $roles,
+        private readonly string $email,
+        private readonly int    $exp,
+        private readonly string $iss,
+        private readonly array  $roles,
     )
     {
     }

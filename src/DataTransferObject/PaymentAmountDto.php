@@ -6,17 +6,12 @@ namespace App\DataTransferObject;
 
 final readonly class PaymentAmountDto
 {
-    private int $amount;
-    private string $currency;
-
     /**
      * @param int $amount
      * @param string $currency
      */
-    public function __construct(int $amount, string $currency)
+    public function __construct(private int $amount, private string $currency)
     {
-        $this->amount = $amount;
-        $this->currency = $currency;
     }
 
     public function getAmount(): int
