@@ -1,6 +1,10 @@
 twig:
   form_themes:
     - 'bootstrap_5_layout.html.twig'
+  globals:
+    stripe_public_key: '%env(STRIPE_PUBLIC_KEY)%'
+    stripe_private_key: '%env(resolve:STRIPE_PRIVATE_KEY)%'
+
   file_name_pattern: '*.twig'
 
 when@test:

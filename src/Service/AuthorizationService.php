@@ -2,26 +2,21 @@
 
 namespace App\Service;
 
+use App\DataTransferObject\JwtTokenDto;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\ExpiredTokenException;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\InvalidTokenException;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
-use Twig\Environment;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 readonly class AuthorizationService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private MailerInterface        $mailer,
-        private Environment            $twig,
+        private EmailService           $emailService,
         private JWTEncoderInterface    $jwtEncoder,
+        private ParameterBagInterface  $parameterBag,
     )
     {
     }
@@ -42,38 +37,59 @@ readonly class AuthorizationService
     }
 
     /**
-     * @throws SyntaxError
-     * @throws JWTEncodeFailureException
+     * @param string $email
      * @throws TransportExceptionInterface
-     * @throws RuntimeError
-     * @throws LoaderError
      */
     public function sentLoginEmail(string $email): void
     {
-        $token = $this->jwtEncoder->encode([
-            'email' => $email,
-            'roles' => ['ROLE_USER'],
+        $token = $this->generateToken(email: $email);
+        $this->emailService->sendAuthenticationEmail(emailAddress: $email, context: [
+            'emailAddress' => $email,
+            'token' => $token
         ]);
-
-        $emailMessage = (new Email())
-            ->from('no-reply@customizer.site')
-            ->to($email)
-            ->subject('customizer.site - Login link')
-            ->html($this->twig->render('email/userLogin.html.twig', [
-                'email' => $email,
-                'token' => $token
-            ]));
-
-        $this->mailer->send($emailMessage);
     }
 
-    public function verifyToken(string $token): User
+    public function isTokenValid(string $token): bool
     {
-        $decodedToken = $this->jwtEncoder->decode($token);
-        if ($decodedToken['exp'] < time()) {
-            throw new ExpiredTokenException();
+        if (empty($token)) {
+            throw new InvalidTokenException('token is invalid');
         }
 
-        return $this->getUser($decodedToken['email'], $decodedToken['roles']);
+        $jwtTokenDto = $this->getJwtTokenDto(token: $token);
+
+        return match (true) {
+            $jwtTokenDto->getIss() === $this->parameterBag->get('app_secret') => true,
+            default => false,
+        };
+    }
+
+    public function getJwtTokenDto(string $token): JwtTokenDto
+    {
+        $decodedToken = $this->jwtEncoder->decode($token);
+        return new JwtTokenDto(
+            email: $decodedToken['email'],
+            exp: $decodedToken['exp'],
+            iss: $decodedToken['iss'],
+            roles: $decodedToken['roles']
+        );
+    }
+
+    public function verifyToken(string $token): null|User
+    {
+        if (!$this->isTokenValid($token)) {
+            return null;
+        }
+
+        $jwtTokenDto = $this->getJwtTokenDto(token: $token);
+        return $this->getUser(email: $jwtTokenDto->getEmail(), roles: $jwtTokenDto->getRoles());
+    }
+
+    public function generateToken(string $email): string
+    {
+        return $this->jwtEncoder->encode([
+            'email' => $email,
+            'roles' => ['ROLE_USER'],
+            'iss' => $this->parameterBag->get('app_secret')
+        ]);
     }
 }
