@@ -98,7 +98,7 @@
           </div>
           <div class="card  text-center border-primary">
             <div class="card-header py-3 text-white">
-              <h4 class="my-0 fw-bold">Enterprise</h4>
+              <h4 class="my-0 fw-bold text-primary">Enterprise</h4>
             </div>
             <div class="card-body">
               <h1 class="card-title pricing-card-title py-3">€12<small class="text-body-secondary fw-light">/mo</small>
@@ -113,6 +113,9 @@
                 <button @click="sendRegistrationEmail" class="btn btn-primary w-100" type="button">
                   Purchase Now
                 </button>
+                <div class="text-center">
+                  <a href="#" class="link-dark">existing customer</a>
+                </div>
               </div>
             </div>
           </div>

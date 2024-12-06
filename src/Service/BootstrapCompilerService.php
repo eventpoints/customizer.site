@@ -9,6 +9,7 @@ namespace App\Service;
 use Minify_CSSmin;
 use Throwable;
 use ScssPhp\ScssPhp\Compiler;
+
 class BootstrapCompilerService
 {
     private readonly Compiler $compiler;
@@ -39,12 +40,20 @@ class BootstrapCompilerService
     @import "functions";
     @import "variables";
     $scssString
+    @import "maps";
     @import "mixins";
-    @import "bootstrap";
+    @import "root";
     SCSS;
 
-        $this->compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
-        $css = $this->compiler->compileString($scssContent)->getCss();
+        $tempFilePath = sys_get_temp_dir() . '/custom_' . uniqid() . '.scss';
+        file_put_contents($tempFilePath, $scssContent);
+
+        try {
+            $this->compiler->setImportPaths(__DIR__ . '/../../node_modules/bootstrap/scss/');
+            $css = $this->compiler->compileFile($tempFilePath)->getCss();
+        } finally {
+            unlink($tempFilePath);
+        }
 
         if ($isMinified) {
             return Minify_CSSmin::minify($css);
@@ -52,5 +61,4 @@ class BootstrapCompilerService
 
         return $css;
     }
-
 }
